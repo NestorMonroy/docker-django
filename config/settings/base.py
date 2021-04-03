@@ -45,6 +45,8 @@ THIRD_PARTY_APPS = [
 ]
 LOCAL_APPS = [
     'src.users.apps.UsersAppConfig',
+    'src.posts.apps.PostsAppConfig',
+
 ]
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 

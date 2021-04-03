@@ -1,0 +1,17 @@
+{% extends "base_menu.html" %}
+{% block content %}
+<h1>Post</h1>
+<p>
+  {% if post_list %}
+<ul>
+    {% for post in post_list %}
+    <li>
+      <a>{{ post.title }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>There are no post in the database.</p>
+{% endif %}
+</p>
+{% endblock %}
