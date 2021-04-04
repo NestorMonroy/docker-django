@@ -14,10 +14,10 @@ class AdListView(View):
     template_name = "posts/post_list.html"
 
     def get(self, request):
-        objects = Post.objects.all().order_by('-modified')[:10]
+        objects = Post.objects.all().order_by('-updated_at')[:10]
 
         for obj in objects:
-            obj.natural_updated = naturaltime(obj.modified)
+            obj.natural_updated = naturaltime(obj.updated_at)
 
         ctx = {
             'post_list': objects,

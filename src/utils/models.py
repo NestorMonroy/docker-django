@@ -12,16 +12,16 @@ class TeamGralModel(models.Model):
             + modified (DateTime): Storre the last datetime the object was modified
     """
 
-    created = models.DateTimeField(
+    created_at = models.DateTimeField(
         'created att',
         auto_now_add=True,
         help_text='Date time on which the object was created.'
 
     )
 
-    modified = models.DateTimeField(
+    updated_at = models.DateTimeField(
         'modified att',
-        auto_now_add=True,
+        auto_now=True,
         help_text='Date time on which the object was modified.'
 
     )
@@ -31,8 +31,8 @@ class TeamGralModel(models.Model):
 
         abstract = True
 
-        get_latest_by = 'created'
-        ordering = ['-created', '-modified']
+        get_latest_by = 'created_at'
+        ordering = ['-created_at', '-updated_at']
 
 
 """
