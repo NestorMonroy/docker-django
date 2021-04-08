@@ -1,0 +1,47 @@
+{% extends "base.html" %} {% block content %}
+
+<!-- Page content -->
+<div class="container d-flex flex-column">
+  <div
+    class="row align-items-center justify-content-center no-gutters min-vh-100"
+  >
+    <div class="col-lg-5 col-md-8 py-8 py-xl-0">
+      <!-- Card -->
+      <div class="card shadow">
+        <!-- Card body -->
+        <div class="card-body p-6">
+          <div class="mb-4">
+            <h1 class="mb-1 font-weight-bold">Sign up</h1>
+            <span
+              >Already have an account?
+              <a href="sign-in.html" class="ml-1">Sign in</a></span
+            >
+          </div>
+          <form method="POST">
+
+            {% csrf_token %} 
+            {{form.as_p}}
+            {% if form.errors %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+        {% endif %}
+        
+            <div>
+              <button type="submit" class="btn btn-primary btn-block">
+                Create Account
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
