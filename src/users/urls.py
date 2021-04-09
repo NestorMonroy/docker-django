@@ -1,6 +1,6 @@
 
 from django.urls import path
-from .views import users as users_views
+from src.users.views import users as users_views
 
 app_name = 'users'
 

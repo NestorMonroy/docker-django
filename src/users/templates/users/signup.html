@@ -17,24 +17,100 @@
               <a href="sign-in.html" class="ml-1">Sign in</a></span
             >
           </div>
-          <form method="POST">
 
-            {% csrf_token %} 
-            {{form.as_p}}
-            {% if form.errors %}
+          {% if form.errors %}
             {% for field in form %}
-                {% for error in field.errors %}
-                    <div class="alert alert-danger">
-                        <strong>{{ error|escape }}</strong>
-                    </div>
-                {% endfor %}
+              {% for error in field.errors %} 
+                <div class="alert alert-danger">
+                  <strong>{{ error|escape }}</strong>
+                </div>
+              {% endfor %}
             {% endfor %}
+          {% endif %}
 
-        {% endif %}
-        
+          <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="email" class="form-label">Email</label>
+              <input
+                type="email"
+                id="email"
+                class="form-control"
+                name="email"
+                placeholder="Email address here"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="username" class="form-label">User Name</label>
+              <input
+                id="username"
+                type="text"
+                class="form-control"
+                name="username"
+                placeholder="User Name"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="first_name" class="form-label">First name</label>
+              <input
+                id="first_name"
+                type="text"
+                class="form-control"
+                name="first_name"
+                placeholder="User Name"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="last_name" class="form-label">Last name</label>
+              <input
+                id="last_name"
+                type="text"
+                class="form-control"
+                name="last_name"
+                placeholder="User Name"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="phone_number" class="form-label">Phone number</label>
+              <input
+                id="phone_number"
+                type="number"
+                class="form-control"
+                name="phone_number"
+                placeholder="Phone number"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="password" class="form-label">Password</label>
+              <input
+                type="password"
+                id="password"
+                class="form-control"
+                name="password"
+                placeholder="**************"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="confirmation" class="form-label">Password Confirmation</label>
+              <input
+                type="password"
+                id="confirmation"
+                class="form-control"
+                name="confirmation"
+                placeholder="**************"
+                required
+              />
+            </div>
             <div>
+              <!-- Button -->
               <button type="submit" class="btn btn-primary btn-block">
-                Create Account
+                Create Free Account
               </button>
             </div>
           </form>
