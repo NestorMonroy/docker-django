@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} {% block content %}{% load static %}
 
 <!-- Page content -->
 <div class="container d-flex flex-column">
@@ -11,10 +11,11 @@
         <!-- Card body -->
         <div class="card-body p-6">
           <div class="mb-4">
+            <a href="{% url 'posts:all' %}"><img src="{% static 'images/red-dimond.svg' %}" class="mb-4" alt=""></a>
             <h1 class="mb-1 font-weight-bold">Sign up</h1>
             <span
               >Already have an account?
-              <a href="sign-in.html" class="ml-1">Sign in</a></span
+              <a href="{% url 'users:login' %}" class="ml-1">Sign in</a></span
             >
           </div>
 

@@ -157,3 +157,5 @@ CELERYD_TASK_SOFT_TIME_LIMIT = 60
 
 #User & Authentication
 AUTH_USER_MODEL = 'users.User'
+
+LOGOUT_REDIRECT_URL = '/login/'
