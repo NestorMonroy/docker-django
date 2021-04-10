@@ -38,9 +38,7 @@ class LoginForm(forms.Form):
         login(request, user)
         user_logged_in.send(user.__class__, instance=user, request=request)
         self.user = user
-        import pdb
-
-        #pdb.set_trace()
+        #import pdb ;pdb.set_trace()
         return data
 
 

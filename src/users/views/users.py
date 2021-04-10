@@ -21,4 +21,4 @@ class LoginView(NextUrlMixin, RequestFormAttachMixin, generic.FormView):
 class SingupView(generic.CreateView):
     template_name = "users/signup.html"
     form_class = SignupForm
-    success_url = reverse_lazy("users:signup")
+    success_url = reverse_lazy("users:login")
