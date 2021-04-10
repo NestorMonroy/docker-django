@@ -35,6 +35,9 @@ class User(TeamGralModel, AbstractUser):
         """Return username. """
         return self.username
 
+    def get_full_name(self):
+        return ("{} {}".format(self.first_name, self.last_name))
+
     def get_short_name(self):
         """Return username. """
         return self.username

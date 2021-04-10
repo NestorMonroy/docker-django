@@ -1,12 +1,47 @@
 from django import forms
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate, login
 from django.core.validators import RegexValidator
 from django.contrib import messages
 
 # Models
 from src.users.models import Profile
 
+from .signals import user_logged_in
+
 User = get_user_model()
+
+
+class LoginForm(forms.Form):
+    email = forms.EmailField(label="Email")
+    password = forms.CharField(widget=forms.PasswordInput)
+
+    def __init__(self, request, *args, **kwargs):
+        self.request = request
+        super(LoginForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        request = self.request
+        data = self.cleaned_data
+        email = data.get("email")
+        password = data.get("password")
+        qs = User.objects.filter(email=email)
+        if qs.exists():
+            # user email is registered, check active/
+            not_active = qs.filter(is_active=False)
+            if not_active.exists():
+                pass
+                ## not active, check email activation
+
+        user = authenticate(request, username=email, password=password)
+        if user is None:
+            raise forms.ValidationError("Invalid credentials")
+        login(request, user)
+        user_logged_in.send(user.__class__, instance=user, request=request)
+        self.user = user
+        import pdb
+
+        #pdb.set_trace()
+        return data
 
 
 class SignupForm(forms.ModelForm):
