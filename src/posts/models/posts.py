@@ -4,6 +4,7 @@ from django.db import models
 from django.db.models.signals import pre_save
 from django.core.validators import MinLengthValidator
 from django.utils.text import slugify
+from django.urls import reverse
 
 # Utilities
 from src.utils.models import TeamGralModel
@@ -30,6 +31,9 @@ class Post(TeamGralModel):
 
     class Meta:
         ordering = ["-created_at", "-updated_at"]
+
+    def get_absolute_url(self):
+        return reverse("posts:detail", kwargs={"slug": self.slug})
 
 
 def create_slug(instance, new_slug=None):

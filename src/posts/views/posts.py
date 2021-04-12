@@ -13,6 +13,23 @@ from src.posts.models import Post
 from src.posts.forms import PostCreateForm
 
 
+class PostDetailView(generic.DetailView):
+    queryset = Post.objects.all()
+    template_name = "posts/post_detail.html"
+
+    def get_object(self, *args, **kwargs):
+        request = self.request
+        slug = self.kwargs.get("slug")
+
+        try:
+            instance = Post.objects.get(slug=slug, status=0)
+        except Product.DoesNotExist:
+            raise Http404("Not found..")
+        except:
+            raise Http404("??")
+        return instance
+
+
 class PostCreateView(LoginRequiredMixin, View):
     template_name = "posts/ad_post.html"
     success_url = reverse_lazy("posts:all")
@@ -30,7 +47,7 @@ class PostCreateView(LoginRequiredMixin, View):
             return render(request, self.template_name, ctx)
 
         post = form.save(commit=False)
-        #import pdb ;pdb.set_trace()
+        # import pdb ;pdb.set_trace()
         post.author = self.request.user.profile
         post.save()
         return redirect(self.success_url)

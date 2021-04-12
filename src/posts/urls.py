@@ -5,9 +5,10 @@ app_name = "posts"
 
 urlpatterns = [
     path("", post_views.PostListView.as_view(), name="all"),
+    path("post/<slug:slug>/", post_views.PostDetailView.as_view(), name="detail"),
     path(
         "post/create",
         post_views.PostCreateView.as_view(),
-        name="post_create",
+        name="create",
     ),
 ]

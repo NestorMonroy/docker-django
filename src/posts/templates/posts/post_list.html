@@ -26,8 +26,9 @@
               <!-- Card body -->
               <div class="card-body">
                 <h3>
-                  <a href="" class="text-inherit">
+                  <a href="{{post.get_absolute_url}}" class="text-inherit">
                     {{post.title}}
+                    {{post.image}}
                   </a>
                 </h3>
                 <p>
@@ -35,10 +36,10 @@
                 </p>
                 <!-- Media content -->
                 <div class="row align-items-center no-gutters mt-4">
-                  {% if user.profile.picture %}
+                  {% if post.author.picture %}
                   <div class="col-auto">
                     <img
-                      src="{{user.profile.picture.url}}"
+                      src="{{ post.author.picture.url}}"
                       alt="avatar"
                       class="rounded-circle avatar-sm mr-2"
                     />

@@ -1,9 +1,84 @@
 {% extends "base.html" %} {% load static %} {% block navbar %}
-
-<nav class="navbar navbar-expand-lg navbar-default">
+<nav class="navbar sticky-top navbar-expand-lg navbar-default">
   <div class="container-fluid px-0">
-    <a class="navbar-brand" href="/"><img src="{% static 'images/red-dimond.svg' %}" alt="" /></a>
-
+    <a class="navbar-brand" href="{% url 'posts:all' %}"
+      ><img src="{% static 'images/red-dimond.svg' %}" alt=""
+    /></a>
+    <!-- Mobile view nav wrap -->
+    <ul
+      class="navbar-nav navbar-right-wrap ml-auto d-lg-none d-flex nav-top-wrap"
+    >
+      {% if user.is_authenticated %}
+      <li class="dropdown ml-2">
+        <a
+          class="rounded-circle"
+          href="#!"
+          role="button"
+          id="dropdownUser"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          {% if user.profile.picture %}
+          <div class="avatar avatar-md avatar-indicators avatar-online">
+            <img
+              alt="avatar"
+              src="{{user.profile.picture.url}}"
+              class="rounded-circle"
+            />
+          </div>
+          {% else %}
+          <div class="avatar avatar-md avatar-indicators avatar-online">
+            <img
+              alt="avatar"
+              src="{% static 'images/default-profile.png' %}"
+              class="rounded-circle"
+            />
+          </div>
+          {% endif %}
+        </a>
+        <div
+          class="dropdown-menu dropdown-menu-right"
+          aria-labelledby="dropdownUser"
+        >
+          <div class="dropdown-item">
+            <div class="d-flex">
+              {% if user.profile.picture %}
+              <div class="avatar avatar-md avatar-indicators avatar-online">
+                <img
+                  alt="avatar"
+                  src="{{user.profile.picture.url}}"
+                  class="rounded-circle"
+                />
+              </div>
+              {% else %}
+              <div class="avatar avatar-md avatar-indicators avatar-online">
+                <img
+                  alt="avatar"
+                  src="{% static 'images/default-profile.png' %}"
+                  class="rounded-circle"
+                />
+              </div>
+              {% endif %}
+              <div class="ml-3 lh-1">
+                <h5 class="mb-1">{{user.get_full_name}}</h5>
+                <p class="mb-0 text-muted">{{user.email}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="dropdown-divider"></div>
+          <ul class="list-unstyled">
+            <li>
+              <a class="dropdown-item" href="{% url 'users:logout' %}">
+                <i class="fe fe-power nav-icon mr-2"></i>Sign Out
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+      {% endif %}
+    </ul>
+    <!-- Button -->
     <button
       class="navbar-toggler collapsed"
       type="button"
@@ -18,12 +93,13 @@
       <span class="icon-bar bottom-bar"></span>
     </button>
     <!-- Collapse -->
-    <div class="navbar-collapse collapse" id="navbar-default">
+    <div class="collapse navbar-collapse" id="navbar-default">
       <ul class="navbar-nav">
+        {% if user.is_authenticated %}
         <li class="nav-item dropdown">
           <a
-            class="nav-link"
-            href="/"
+            class="nav-link dropdown-toggle"
+            href="#!"
             id="navbarBrowse"
             data-toggle="dropdown"
             aria-haspopup="true"
@@ -32,7 +108,24 @@
           >
             Post
           </a>
+          <ul
+            class="dropdown-menu dropdown-menu-arrow"
+            aria-labelledby="navbarBrowse"
+          >
+            <li>
+              <a href="{% url 'posts:create' %}" class="dropdown-item">
+                Add new
+              </a>
+            </li>
+          </ul>
         </li>
+        {% else %}
+        <li class="nav-item dropdown">
+          <a class="nav-link" href="{% url 'posts:all' %}">
+            Post
+          </a>
+        </li>
+        {% endif %}
       </ul>
       {% if user.is_authenticated %}
       <ul class="navbar-nav navbar-right-wrap ml-auto d-none d-lg-block">
@@ -46,8 +139,7 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-          
-          {% if user.profile.picture %}
+            {% if user.profile.picture %}
             <div class="avatar avatar-md avatar-indicators avatar-online">
               <img
                 alt="avatar"
@@ -63,8 +155,7 @@
                 class="rounded-circle"
               />
             </div>
-          {% endif %}
-
+            {% endif %}
           </a>
           <div
             class="dropdown-menu dropdown-menu-right"
@@ -88,7 +179,7 @@
                     class="rounded-circle"
                   />
                 </div>
-              {% endif %}
+                {% endif %}
                 <div class="ml-3 lh-1">
                   <h5 class="mb-1">{{user.get_full_name}}</h5>
                   <p class="mb-0 text-muted">{{user.email}}</p>
@@ -108,12 +199,13 @@
       </ul>
       {% else %}
       <div class="ml-auto mt-3 mt-lg-0">
-        <a href="{% url 'users:login' %}" class="btn btn-white shadow-sm mr-1">Login</a>
+        <a href="{% url 'users:login' %}" class="btn btn-white shadow-sm mr-1"
+          >Login</a
+        >
         <a href="{% url 'users:signup' %}" class="btn btn-primary">Sign Up</a>
       </div>
       {% endif %}
     </div>
   </div>
 </nav>
-
 {% endblock %}

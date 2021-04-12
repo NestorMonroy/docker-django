@@ -45,7 +45,7 @@ class PostCreateForm(forms.ModelForm):
             bytearr = f.read()
             instance.content_type = f.content_type
             instance.image = bytearr  # Overwrite with the actual image data
-
+        import pdb ;pdb.set_trace()
         if commit:
             instance.save()
 
