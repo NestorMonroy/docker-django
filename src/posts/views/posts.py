@@ -2,7 +2,7 @@ from django.views import View
 from django.http import request
 from django.urls import reverse_lazy
 from django.views import generic, View
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.contrib.humanize.templatetags.humanize import naturaltime
@@ -30,8 +30,8 @@ class PostCreateView(LoginRequiredMixin, View):
             return render(request, self.template_name, ctx)
 
         post = form.save(commit=False)
-        import pdb ;pdb.set_trace()
-        post.author = self.request.user
+        #import pdb ;pdb.set_trace()
+        post.author = self.request.user.profile
         post.save()
         return redirect(self.success_url)
 
