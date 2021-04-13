@@ -1,7 +1,6 @@
-from django.views import View
+from django.views import generic
 from django.http import request, Http404, HttpResponse
 from django.urls import reverse_lazy
-from django.views import generic, View
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -21,12 +20,13 @@ def stream_file(request, slug):
     response.write(pic.image)
     return response
 
+
 class PostDetailView(generic.DetailView):
     queryset = Post.objects.all()
     template_name = "posts/post_detail.html"
 
     def get_object(self, *args, **kwargs):
-        request = self.request
+        # request = self.request
         slug = self.kwargs.get("slug")
 
         try:
@@ -38,11 +38,40 @@ class PostDetailView(generic.DetailView):
         return instance
 
 
-class PostCreateView(LoginRequiredMixin, View):
-    template_name = "posts/ad_post.html"
+class PostUpdateView(LoginRequiredMixin, generic.View):
+    template_name = "posts/post_form.html"
+    context_object_name = "obj"
     success_url = reverse_lazy("posts:all")
 
-    def get(self, request, pk=None):
+    def get(self, request, slug):
+
+        slug = self.kwargs.get("slug")
+        post = get_object_or_404(Post, slug=slug, author=self.request.user)
+        form = PostCreateForm(instance=post)
+        ctx = {"form": form}
+        #import pdb ;pdb.set_trace()
+        return render(request, self.template_name, ctx)
+
+    def post(self, request, slug=None):
+        slug = self.kwargs.get("slug")
+        post = get_object_or_404(Post, slug=slug, author=self.request.user)
+        form = PostCreateForm(request.POST, request.FILES or None, instance=post)
+
+        if not form.is_valid():
+            ctx = {"form": form}
+            return render(request, self.template_name, ctx)
+
+        post = form.save(commit=False)
+        post.save()
+        
+        return redirect(self.success_url)
+
+
+class PostCreateView(LoginRequiredMixin, generic.View):
+    template_name = "posts/post_form.html"
+    success_url = reverse_lazy("posts:all")
+
+    def get(self, request, slug=None):
         form = PostCreateForm()
         ctx = {"form": form}
         return render(request, self.template_name, ctx)
@@ -61,7 +90,7 @@ class PostCreateView(LoginRequiredMixin, View):
         return redirect(self.success_url)
 
 
-class PostListView(View):
+class PostListView(generic.View):
     model = Post
     template_name = "posts/post_list.html"
 

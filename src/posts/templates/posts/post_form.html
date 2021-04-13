@@ -1,10 +1,11 @@
 {% extends "base_menu.html" %} {% load humanize %} {% load static %} 
 {% block content %}
-
 <div class="card mb-4 mt-4">
   <!-- Card Header -->
   <div class="card-header">
-    <h4 class="mb-0">Add Post</h4>
+    <h4 class="mb-0">
+      {% if form.instance.pk >= 1 %} Edit Post {% else %} Add Post {% endif %}
+    </h4>
   </div>
   <!-- Card Body -->
   <div class="card-body">
@@ -15,7 +16,8 @@
         <label for="title" class="form-label">Title</label>
         <input
           class="form-control"
-          id="title"
+          id="id_title"
+          value="{% if form.instance.title %}{{form.instance.title}}{% endif %}"
           name="title"
           placeholder="Title"
           type="text"
@@ -23,42 +25,57 @@
         />
       </div>
       <div class="form-group mb-4">
-        <label for="content" class="form-label"
-          >Content
-        </label>
+        <label for="content" class="form-label">Content </label>
         <textarea
           class="form-control"
-          id="content"
+          id="id_content"
           name="content"
-          placeholder="Site Description "
-          required=""
+          placeholder="Content"
+          required
           rows="4"
-        ></textarea>
+        >{% if form.instance.content %}{{form.instance.content}}{% endif %}</textarea>
       </div>
       <div class="form-group mb-4">
-        <label class="form-label"
+        <label for="id_image" class="form-label"
           >Image
-          <small class="text-muted"
-            >(Upload your website logo - 120 x 40 )</small
-          >
+          <small class="text-muted">(Upload your Image <= 2.0MB:)</small>
         </label>
         <div class="custom-file">
-          <input name="image" type="file" class="custom-file-input" id="id_image" />
-          <label class="custom-file-label" for="image">Choose image</label>
+          <input
+            name="image"
+            type="file"
+            class="custom-file-input"
+            id="id_image"
+          />
+          <label class="custom-file-label" for="id_image">Choose image</label>
         </div>
       </div>
 
       <div class="form-group mb-4">
-        <label class="form-label">Status</label>
-        <select name="status" id="id_status" class="selectpicker" data-width="100%">
+        <label for="id_status" class="form-label">Status</label>
+        <select
+          name="status"
+          id="id_status"
+          class="selectpicker"
+          data-width="100%"
+        >
           <option value="">Select Status</option>
           {% for pk, choice in form.status.field.widget.choices %}
-          <option value="{{pk}}" > {{choice}}</option>
+          <option value="{{pk}}"{% if form.status.value == pk %}selected{% endif %}> {{choice}}</option>
           {% endfor %}
         </select>
       </div>
+    
+      <!-- <div class="form-group mb-4">
+        <select name="status" class="selectpicker" data-title="Select Status">
+          {% for x,y in form.fields.status.choices %}
+             <option value="{{x}}"{% if form.status.value == x %}selected{% endif %}>{{ y }}</option>
+          {% endfor %}
+          </select>
+      </div> -->
+
       <button type="submit" class="btn btn-success">
-        Add Post
+        Submit
       </button>
       <button
         type="Cancel"
@@ -85,9 +102,8 @@
           return false;
         }
       }
-      alert("jQuery is working perfectly.");
+      //alert("jQuery is working perfectly.");
     });
   });
 </script>
-{% endblock %} 
-{% endblock%}
+{% endblock %} {% endblock%}

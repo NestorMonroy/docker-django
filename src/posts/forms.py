@@ -6,6 +6,8 @@ from .humanize import naturalsize
 
 
 class PostCreateForm(forms.ModelForm):
+    STATUS = ((0, "Draft"), (1, "Publish"))
+
     max_upload_limit = 2 * 1024 * 1024
     max_upload_limit_text = naturalsize(max_upload_limit)
 
@@ -16,7 +18,7 @@ class PostCreateForm(forms.ModelForm):
         required=False, label="File to Upload <= " + max_upload_limit_text
     )
     upload_field_name = "image"
-
+    status = forms.ChoiceField(required=True, choices=STATUS)
     # Hint: this will need to be changed for use in the ads application :)
     class Meta:
         model = Post
