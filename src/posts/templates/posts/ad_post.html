@@ -10,7 +10,7 @@
   <div class="card-body">
     <!-- Form -->
     <form method="post" id="upload_post" enctype="multipart/form-data">
-      {% csrf_token %} 
+      {% csrf_token %}
       <div class="form-group mb-4">
         <label for="title" class="form-label">Title</label>
         <input
@@ -43,17 +43,28 @@
           >
         </label>
         <div class="custom-file">
-          <input name="" type="file" class="custom-file-input" id="image" />
+          <input name="image" type="file" class="custom-file-input" id="id_image" />
           <label class="custom-file-label" for="image">Choose image</label>
         </div>
       </div>
-      <div class="form-group  mb-4"">
-        {{form.status}}
+
+      <div class="form-group mb-4">
+        <label class="form-label">Status</label>
+        <select name="status" id="id_status" class="selectpicker" data-width="100%">
+          <option value="">Select Status</option>
+          {% for pk, choice in form.status.field.widget.choices %}
+          <option value="{{pk}}" > {{choice}}</option>
+          {% endfor %}
+        </select>
       </div>
       <button type="submit" class="btn btn-success">
-       Add Post
+        Add Post
       </button>
-      <button type="Cancel" class="btn btn-danger" onclick="window.location.href='{% url 'posts:all' %}';return false;">
+      <button
+        type="Cancel"
+        class="btn btn-danger"
+        onclick="window.location.href='{% url 'posts:all' %}';return false;"
+      >
         Cancel
       </button>
     </form>
@@ -61,17 +72,22 @@
 </div>
 
 <!-- https://stackoverflow.com/questions/2472422/django-file-upload-size-limit -->
+
+{% block javascript %}
 <script>
-  $("#upload_post").submit(function() {
-    console.log('Checking file size');
-    if (window.File && window.FileReader && window.FileList && window.Blob) {
-        var file = $('#id_{{ form.upload_field_name }}')[0].files[0];
-        if (file && file.size > {{ form.max_upload_limit }} ) {
-            alert("File " + file.name + " of type " + file.type + " must be < {{ form.max_upload_limit_text }}");
-        return false;
+  $(document).ready(function(){
+    $("#upload_post").submit(function() {
+      console.log('Checking file size');
+      if (window.File && window.FileReader && window.FileList && window.Blob) {
+          var file = $('#id_{{ form.upload_field_name }}')[0].files[0];
+          if (file && file.size > {{ form.max_upload_limit }} ) {
+              alert("File " + file.name + " of type " + file.type + " must be < {{ form.max_upload_limit_text }}");
+          return false;
+        }
       }
-    }
+      alert("jQuery is working perfectly.");
+    });
   });
 </script>
-
+{% endblock %} 
 {% endblock%}

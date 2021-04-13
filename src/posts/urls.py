@@ -11,4 +11,5 @@ urlpatterns = [
         post_views.PostCreateView.as_view(),
         name="create",
     ),
+    path("post_picture/<slug:slug>", post_views.stream_file, name="post_picture"),
 ]

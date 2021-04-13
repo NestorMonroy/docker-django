@@ -3,10 +3,10 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 
-from src.utils.models import TeamGralModel
+from src.utils.models import GralModel
 
 
-class User(TeamGralModel, AbstractUser):
+class User(GralModel, AbstractUser):
     """ User model.
     Extend from Django's Abstract User, change the username field to email and
     add some extra fields

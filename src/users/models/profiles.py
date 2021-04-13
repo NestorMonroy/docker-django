@@ -3,10 +3,10 @@
 from django.db import models
 
 # Utilities
-from src.utils.models import TeamGralModel
+from src.utils.models import GralModel
 
 
-class Profile(TeamGralModel):
+class Profile(GralModel):
     """Profile model.
     A profile holds a user's public data like biography, picture,
     and statistics.
