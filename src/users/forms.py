@@ -32,7 +32,7 @@ class LoginForm(forms.Form):
                 pass
                 ## not active, check email activation
 
-        user = authenticate(request, username=email, password=password)
+        user = authenticate(request, email=email, password=password)
         if user is None:
             raise forms.ValidationError("Invalid credentials")
         login(request, user)
@@ -52,11 +52,6 @@ class SignupForm(forms.ModelForm):
         widget=forms.EmailInput(attrs={"required": True}),
     )
 
-    username = forms.CharField(
-        max_length=50,
-        widget=forms.TextInput(attrs={"required": True}),
-    )
-
     first_name = forms.CharField(
         max_length=50,
         widget=forms.TextInput(attrs={"required": True}),
@@ -67,13 +62,6 @@ class SignupForm(forms.ModelForm):
         max_length=50,
         widget=forms.TextInput(attrs={"required": True}),
     )
-
-    phone_regex = RegexValidator(
-        regex=r"\+?1?\d{9,15}$",
-        message="Phone number must be entered in the format: +1234567890 Up to 15 digits allowed.",
-    )
-
-    phone_number = forms.CharField(validators=[phone_regex])
 
     password = forms.CharField(
         min_length=6,
@@ -89,7 +77,7 @@ class SignupForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ("email", "username", "first_name", "last_name", "phone_number")
+        fields = ("email", "first_name", "last_name")
 
     def clean_confirmation(self):
         """ Verify password confirmation match """

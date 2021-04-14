@@ -1,26 +1,26 @@
-"""User models admin."""
+# """User models admin."""
 
-# Django
-from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
+# # Django
+# from django.contrib import admin
+# from django.contrib.auth.admin import UserAdmin
 
-# Models
-from src.users.models import User, Profile
-
-
-class CustomUserAdmin(UserAdmin):
-    """User model admin."""
-
-    list_display = ('email', 'username', 'first_name', 'last_name', 'is_staff', 'is_client')
-    list_filter = ('is_client', 'is_staff', 'created_at', 'updated_at')
+# # Models
+# from src.users.models import User, Profile
 
 
-@admin.register(Profile)
-class ProfileAdmin(admin.ModelAdmin):
-    """Profile model admin."""
+# class CustomUserAdmin(UserAdmin):
+#     """User model admin."""
 
-    search_fields = ('user__username', 'user__email', 'user__first_name', 'user__last_name')
+#     list_display = ('email', 'first_name', 'last_name', 'is_staff', 'is_client')
+#     list_filter = ('is_client', 'is_staff', 'created_at', 'updated_at')
 
 
-"""se sobre escribe el nuevo admin """
-admin.site.register(User, CustomUserAdmin)
+# @admin.register(Profile)
+# class ProfileAdmin(admin.ModelAdmin):
+#     """Profile model admin."""
+
+#     search_fields = ('user__email', 'user__first_name', 'user__last_name')
+
+
+# """se sobre escribe el nuevo admin """
+# admin.site.register(User, CustomUserAdmin)

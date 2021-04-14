@@ -4,9 +4,13 @@ from django.urls import reverse_lazy, reverse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.db.utils import IntegrityError
+
 from django.contrib.humanize.templatetags.humanize import naturaltime
 
-from src.posts.models import Post, Comment
+from src.posts.models import Post, Comment, Fav
 from src.posts.forms import PostCreateForm, CommentForm
 from src.utils import owner, mixins as post_mixins
 from src.utils.mixins import ContextPostSlugMixin
@@ -31,10 +35,24 @@ class PostDetailView(post_mixins.ContextPostSlugMixin, generic.DetailView):
     template_name = "posts/post_detail.html"
 
     def get(self, request, slug):
-        x = Post.objects.get(slug=slug)
-        comments = Comment.objects.filter(post=x).order_by("-updated_at")
+        post_list = Post.objects.get(slug=slug)
+        favorites = list()
+        comments = Comment.objects.filter(post=post_list).order_by("-updated_at")
         comment_form = CommentForm()
-        context = {"post": x, "comments": comments, "comment_form": comment_form}
+
+        if request.user.is_authenticated:
+            # rows = [{'id': 2}, {'id': 4} ... ]  (A list of rows)
+            rows = request.user.favorite_post.values("id")
+            # favorites = [2, 4, ...] using list comprehension
+            favorites = [row["id"] for row in rows]
+
+        context = {
+            "post": post_list,
+            "comments": comments,
+            "comment_form": comment_form,
+            'favorites': favorites
+        }
+
         return render(request, self.template_name, context)
 
 
@@ -122,3 +140,29 @@ class CommentDeleteView(owner.OwnerDeleteView):
     def get_success_url(self):
         post = self.object.post
         return reverse("posts:post_detail", args=[post.slug])
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class AddFavoriteView(LoginRequiredMixin, generic.View):
+    def post(self, request, pk):
+        print("Post PK", pk)
+        post = get_object_or_404(Post, id=pk)
+        fav = Fav(user=request.user, post=post)
+        try:
+            fav.save()  # In case of duplicate key
+        except IntegrityError as e:
+            pass
+        return HttpResponse()
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class DeleteFavoriteView(LoginRequiredMixin, generic.View):
+    def post(self, request, pk):
+        print("Delete PK", pk)
+        post = get_object_or_404(Post, id=pk)
+        try:
+            fav = Fav.objects.get(user=request.user, post=post).delete()
+        except Fav.DoesNotExist as e:
+            pass
+
+        return HttpResponse()

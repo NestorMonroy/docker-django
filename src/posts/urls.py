@@ -32,4 +32,10 @@ urlpatterns = [
         post_views.CommentDeleteView.as_view(success_url=reverse_lazy("posts")),
         name="post_comment_delete",
     ),
+    path("post/<int:pk>/favorite", post_views.AddFavoriteView.as_view(), name="post_favorite"),
+    path(
+        "post/<int:pk>/unfavorite",
+        post_views.DeleteFavoriteView.as_view(),
+        name="post_unfavorite",
+    ),
 ]

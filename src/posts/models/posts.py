@@ -33,7 +33,7 @@ class Post(GralModel):
         settings.AUTH_USER_MODEL, through="Comment", related_name="comments_owned"
     )
     favorites = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, through="Fav", related_name="favorite_ads"
+        settings.AUTH_USER_MODEL, through="Fav", related_name="favorite_post"
     )
 
     def __str__(self):
@@ -90,4 +90,4 @@ class Fav(GralModel):
         unique_together = ("post", "user")
 
     def __str__(self):
-        return "%s likes %s" % (self.user.username, self.ad.title[:10])
+        return "%s likes %s" % (self.user.email, self.ad.title[:10])

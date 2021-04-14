@@ -30,7 +30,6 @@
             {% endif %}
             <div class="ml-2 lh-1">
               <h5 class="mb-1">{{post.author.get_full_name}}</h5>
-              <span class="text-primary">Marketing Manager</span>
             </div>
           </div>
           <div>
@@ -70,7 +69,27 @@
       </div>
       <div class="col-xl-8 col-lg-8 col-md-12 col-12 mb-2">
         <div class="mb-4">
-          <span style="float: right;">
+          <div>
+            {% if user.is_authenticated %}
+            <!-- Two hrefs with two stacked icons each - one showing and one hidden -->
+            <a href="#" onclick="favPost('{% url 'posts:post_favorite' post.id %}', {{ post.id }} );return false;" 
+            {% if post.id not in favorites %} style="display: none;" {% endif %} id="favorite_star_{{post.id}}">
+              <span class="fa-stack" style="vertical-align: middle;">
+                <i class="fa fa-star fa-stack-1x" style="color: orange;"></i>
+                <i class="fa fa-star-o fa-stack-1x"></i>
+              </span>
+            </a>
+            <!-- the second href -->
+            <a href="#" onclick="favPost('{% url 'posts:post_unfavorite' post.id %}', {{ post.id }} );return false;" 
+            {% if post.id in favorites %} style="display: none;" {% endif %} id="unfavorite_star_{{post.id}}">
+              <span class="fa-stack" style="vertical-align: middle;">
+                <i class="fa fa-star fa-stack-1x" style="display: none; color: orange;"></i>
+                <i class="fa fa-star-o fa-stack-1x"></i>
+              </span>
+            </a>
+            {% endif %}   
+          </div>
+          <span style="float: right;">     
             Published: {{ post.updated_at|naturaltime }}
             <hr class="mt-1" />
             <div class="row justify-content-around">
@@ -156,6 +175,19 @@
     </div>
   </div>
 </div>
-
+{% block javascript %}
+<script>
+  function favPost(url, ad_id) {
+    console.log('Requesting JSON');
+    $.post(url, {}, function (data) {
+      console.log(url, 'finished');
+      $("#unfavorite_star_" + ad_id).toggle();
+      $("#favorite_star_" + ad_id).toggle();
+    }).fail(function (xhr) {
+      alert('Url failed with ' + xhr.status + ' ' + url);
+    });
+  }
+</script>
+{% endblock %}
 
 {% endblock %}
