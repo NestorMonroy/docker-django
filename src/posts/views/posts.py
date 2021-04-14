@@ -10,8 +10,8 @@ from django.db.utils import IntegrityError
 
 from django.contrib.humanize.templatetags.humanize import naturaltime
 
-from src.posts.models import Post, Comment, Fav
-from src.posts.forms import PostCreateForm, CommentForm
+from src.posts.models import Post, Comment, Fav, Tag
+from src.posts.forms import PostCreateForm, CommentForm, TagForm
 from src.utils import owner, mixins as post_mixins
 from src.utils.mixins import ContextPostSlugMixin
 
@@ -38,7 +38,7 @@ class PostDetailView(post_mixins.ContextPostSlugMixin, generic.DetailView):
 
     def get(self, *args, **kwargs):
         request = self.request
-        slug = self.kwargs.get('slug')
+        slug = self.kwargs.get("slug")
         instance = Post.objects.get_by_slug(slug)
         favorites = list()
         comments = Comment.objects.filter(post=instance).order_by("-updated_at")
@@ -120,16 +120,13 @@ class PostListView(generic.View):
         query = request.GET.get("search", False)
         for obj in objects:
             obj.natural_updated = naturaltime(obj.updated_at)
-            
+
         if query:
             objects = Post.objects.search(query)
 
         else:
             objects = Post.objects.all().order_by("-updated_at")
-        ctx = {
-            "post_list": objects,
-            'search': query
-        }
+        ctx = {"post_list": objects, "search": query}
 
         return render(request, self.template_name, ctx)
 

@@ -1,13 +1,26 @@
 from django import forms
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
-from src.posts.models import Post
+from src.posts.models import Post, Tag
 from .humanize import naturalsize
 
 
+class TagForm(forms.ModelForm):
+    class Meta:
+        model = Tag
+        fields = [
+            "title",
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs["class"] = "form-control"
+
+
 class CommentForm(forms.Form):
-    comment = forms.CharField(
-        required=True, max_length=500, min_length=3, strip=True)
+    comment = forms.CharField(required=True, max_length=500, min_length=3, strip=True)
+
 
 class PostCreateForm(forms.ModelForm):
     STATUS = ((0, "Draft"), (1, "Publish"))
