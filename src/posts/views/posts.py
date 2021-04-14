@@ -1,5 +1,5 @@
 from django.views import generic
-from django.http import request, Http404, HttpResponse
+from django.http import request, HttpResponse
 from django.urls import reverse_lazy
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,23 +8,13 @@ from django.contrib.humanize.templatetags.humanize import naturaltime
 
 from src.posts.models import Post
 from src.posts.forms import PostCreateForm
-from src.utils.owner import OwnerDeleteView
+from src.utils import owner, mixins as post_mixins
+from src.utils.mixins import ContextPostSlugMixin
 
 
-class PostDeleteView(OwnerDeleteView):
+class PostDeleteView(post_mixins.ContextPostSlugMixin, owner.OwnerDeleteView):
     model = Post
     success_url = reverse_lazy("posts:all")
-
-    def get_object(self, *args, **kwargs):
-        slug = self.kwargs.get("slug")
-        
-        try:
-            instance = Post.objects.get(slug=slug)
-        except Post.DoesNotExist:
-            raise Http404("Not found..")
-        except:
-            raise Http404("??")
-        return instance
 
 
 def stream_file(request, slug):
@@ -36,21 +26,9 @@ def stream_file(request, slug):
     return response
 
 
-class PostDetailView(generic.DetailView):
+class PostDetailView(post_mixins.ContextPostSlugMixin, generic.DetailView):
     queryset = Post.objects.all()
     template_name = "posts/post_detail.html"
-
-    def get_object(self, *args, **kwargs):
-        # request = self.request
-        slug = self.kwargs.get("slug")
-
-        try:
-            instance = Post.objects.get(slug=slug, status=1)
-        except Post.DoesNotExist:
-            raise Http404("Not found..")
-        except:
-            raise Http404("??")
-        return instance
 
 
 class PostUpdateView(LoginRequiredMixin, generic.View):
