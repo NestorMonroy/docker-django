@@ -106,11 +106,19 @@ class PostListView(generic.View):
         return render(request, self.template_name, ctx)
 
 
-
 class CommentCreateView(LoginRequiredMixin, generic.View):
     def post(self, request, slug):
         a = get_object_or_404(Post, slug=slug)
-        comment = Comment(
-            text=request.POST['comment'], owner=request.user, post=a)
+        comment = Comment(text=request.POST["comment"], owner=request.user, post=a)
         comment.save()
-        return redirect(reverse('posts:post_detail', args=[slug]))
+        return redirect(reverse("posts:post_detail", args=[slug]))
+
+
+class CommentDeleteView(owner.OwnerDeleteView):
+    model = Comment
+    template_name = "posts/comment_delete.html"
+
+    # https://stackoverflow.com/questions/26290415/deleteview-with-a-dynamic-success-url-dependent-on-id
+    def get_success_url(self):
+        post = self.object.post
+        return reverse("posts:post_detail", args=[post.slug])

@@ -27,4 +27,9 @@ urlpatterns = [
         post_views.CommentCreateView.as_view(),
         name="post_comment_create",
     ),
+    path(
+        "comment/<int:pk>/delete",
+        post_views.CommentDeleteView.as_view(success_url=reverse_lazy("posts")),
+        name="post_comment_delete",
+    ),
 ]

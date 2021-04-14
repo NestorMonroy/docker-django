@@ -146,7 +146,7 @@
               <p>{{ comment.text }}</p>
               <div class="mb-0 d-lg-flex">
                 {% if user == comment.owner %}
-                <a class="text-danger" href=""><i class="fa fa-trash "></i> Delete</a>
+                <a class="text-danger" href="{% url 'posts:post_comment_delete' comment.id %}"><i class="fa fa-trash "></i> Delete</a>
                  {% endif %}
               </div>
            </div>
