@@ -5,7 +5,7 @@ app_name = "posts"
 
 urlpatterns = [
     path("", post_views.PostListView.as_view(), name="all"),
-    path("post/<slug:slug>/", post_views.PostDetailView.as_view(), name="detail"),
+    path("post/<slug:slug>/", post_views.PostDetailView.as_view(), name="post_detail"),
     path(
         "post/create",
         post_views.PostCreateView.as_view(),
@@ -22,4 +22,9 @@ urlpatterns = [
         name="post_delete",
     ),
     path("post_picture/<slug:slug>", post_views.stream_file, name="post_picture"),
+    path(
+        "post/<slug:slug>/comment",
+        post_views.CommentCreateView.as_view(),
+        name="post_comment_create",
+    ),
 ]

@@ -5,6 +5,10 @@ from src.posts.models import Post
 from .humanize import naturalsize
 
 
+class CommentForm(forms.Form):
+    comment = forms.CharField(
+        required=True, max_length=500, min_length=3, strip=True)
+
 class PostCreateForm(forms.ModelForm):
     STATUS = ((0, "Draft"), (1, "Publish"))
 

@@ -3,7 +3,7 @@ from django.views.generic import DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class OwnerDeleteView(LoginRequiredMixin, DeleteView):
+class AuthorDeleteView(LoginRequiredMixin, DeleteView):
     """
     Sub-class the DeleteView to restrict a User from deleting other
     user's data.

@@ -90,5 +90,72 @@
     </div>
     <hr class="mt-8 mb-5" />
   </div>
+  <div class="container">
+    <div class="card ">
+      <div class="card-body">
+        <!-- Form -->
+        <form method="post" action="{% url 'posts:post_comment_create' post.slug %}">
+          {% csrf_token %}
+          <div class="form-group mb-4">
+            <label for="content" class="form-label">Comment: </label>
+            <textarea
+              class="form-control"
+              id="id_comment"
+              name="comment"
+              placeholder="Content"
+              required
+              rows="4" 
+              cols="8"
+              minlength="3"
+            ></textarea>
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-outline-success">
+              Submit
+            </button>
+            <button
+              type="Cancel"
+              class="btn btn-outline-primary"
+              onclick="window.location.href='{% url 'posts:all' %}';return false;"
+            >
+              All Ads
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row">
+     <div class="mb-3">
+        <div class="d-lg-flex align-items-center justify-content-between mb-5">
+           <div class="mb-3 mb-lg-0">
+              <h3 class="mb-0">Comments</h3>
+           </div>
+        </div>
+        {% for comment in comments %}
+        <div class="d-flex align-items-start border-bottom pb-4 mb-4">
+          {% if comment.owner.profile.picture %}
+            <img src="{{comment.owner.profile.picture.url}}" alt="" class="rounded-circle avatar-lg">
+          {% else %}
+            <img src="{% static 'images/default-profile.png' %}" alt="" class="rounded-circle avatar-lg">
+          {% endif %}
+           <div class="ml-3">
+              <h4 class="mb-1">
+                 {{comment.owner.get_full_name}}
+                 <span class="ml-1 font-size-xs text-muted">{{ comment.updated_at|naturaltime }}</span>
+              </h4>
+              <p>{{ comment.text }}</p>
+              <div class="mb-0 d-lg-flex">
+                {% if user == comment.owner %}
+                <a class="text-danger" href=""><i class="fa fa-trash "></i> Delete</a>
+                 {% endif %}
+              </div>
+           </div>
+        </div>
+        {% endfor %}
+     </div>
+    </div>
+  </div>
 </div>
+
+
 {% endblock %}

@@ -1,18 +1,18 @@
 from django.views import generic
 from django.http import request, HttpResponse
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.contrib.humanize.templatetags.humanize import naturaltime
 
-from src.posts.models import Post
-from src.posts.forms import PostCreateForm
+from src.posts.models import Post, Comment
+from src.posts.forms import PostCreateForm, CommentForm
 from src.utils import owner, mixins as post_mixins
 from src.utils.mixins import ContextPostSlugMixin
 
 
-class PostDeleteView(post_mixins.ContextPostSlugMixin, owner.OwnerDeleteView):
+class PostDeleteView(post_mixins.ContextPostSlugMixin, owner.AuthorDeleteView):
     model = Post
     success_url = reverse_lazy("posts:all")
 
@@ -27,8 +27,15 @@ def stream_file(request, slug):
 
 
 class PostDetailView(post_mixins.ContextPostSlugMixin, generic.DetailView):
-    queryset = Post.objects.all()
+    model = Post
     template_name = "posts/post_detail.html"
+
+    def get(self, request, slug):
+        x = Post.objects.get(slug=slug)
+        comments = Comment.objects.filter(post=x).order_by("-updated_at")
+        comment_form = CommentForm()
+        context = {"post": x, "comments": comments, "comment_form": comment_form}
+        return render(request, self.template_name, context)
 
 
 class PostUpdateView(LoginRequiredMixin, generic.View):
@@ -97,3 +104,13 @@ class PostListView(generic.View):
         }
 
         return render(request, self.template_name, ctx)
+
+
+
+class CommentCreateView(LoginRequiredMixin, generic.View):
+    def post(self, request, slug):
+        a = get_object_or_404(Post, slug=slug)
+        comment = Comment(
+            text=request.POST['comment'], owner=request.user, post=a)
+        comment.save()
+        return redirect(reverse('posts:post_detail', args=[slug]))

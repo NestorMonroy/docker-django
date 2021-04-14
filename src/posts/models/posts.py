@@ -43,7 +43,7 @@ class Post(GralModel):
         ordering = ["-created_at", "-updated_at"]
 
     def get_absolute_url(self):
-        return reverse("posts:detail", kwargs={"slug": self.slug})
+        return reverse("posts:post_detail", kwargs={"slug": self.slug})
 
 
 def create_slug(instance, new_slug=None):
