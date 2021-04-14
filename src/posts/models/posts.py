@@ -10,6 +10,8 @@ from django.conf import settings
 # Utilities
 from src.utils.models import GralModel
 
+from .managers import PostManager
+
 STATUS = ((0, "Draft"), (1, "Publish"))
 
 from src.utils.extra import upload_post_image_path
@@ -35,6 +37,9 @@ class Post(GralModel):
     favorites = models.ManyToManyField(
         settings.AUTH_USER_MODEL, through="Fav", related_name="favorite_post"
     )
+
+
+    objects = PostManager()
 
     def __str__(self):
         return self.title

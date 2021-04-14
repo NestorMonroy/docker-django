@@ -33,11 +33,15 @@ def stream_file(request, slug):
 class PostDetailView(post_mixins.ContextPostSlugMixin, generic.DetailView):
     model = Post
     template_name = "posts/post_detail.html"
+    # slug_field = 'slug'
+    # slug_url_kwarg = 'slug'
 
-    def get(self, request, slug):
-        post_list = Post.objects.get(slug=slug)
+    def get(self, *args, **kwargs):
+        request = self.request
+        slug = self.kwargs.get('slug')
+        instance = Post.objects.get_by_slug(slug)
         favorites = list()
-        comments = Comment.objects.filter(post=post_list).order_by("-updated_at")
+        comments = Comment.objects.filter(post=instance).order_by("-updated_at")
         comment_form = CommentForm()
 
         if request.user.is_authenticated:
@@ -47,10 +51,10 @@ class PostDetailView(post_mixins.ContextPostSlugMixin, generic.DetailView):
             favorites = [row["id"] for row in rows]
 
         context = {
-            "post": post_list,
+            "post": instance,
             "comments": comments,
             "comment_form": comment_form,
-            'favorites': favorites
+            "favorites": favorites,
         }
 
         return render(request, self.template_name, context)
@@ -112,13 +116,19 @@ class PostListView(generic.View):
     template_name = "posts/post_list.html"
 
     def get(self, request):
-        objects = Post.objects.filter(status=1).order_by("-updated_at")[:10]
-
+        objects = Post.objects.filter(status=1).order_by("-updated_at")
+        query = request.GET.get("search", False)
         for obj in objects:
             obj.natural_updated = naturaltime(obj.updated_at)
+            
+        if query:
+            objects = Post.objects.search(query)
 
+        else:
+            objects = Post.objects.all().order_by("-updated_at")
         ctx = {
             "post_list": objects,
+            'search': query
         }
 
         return render(request, self.template_name, ctx)
