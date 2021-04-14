@@ -13,8 +13,13 @@ urlpatterns = [
     ),
     path(
         "post/<slug:slug>/update",
-        post_views.PostUpdateView.as_view(success_url=reverse_lazy("posts:all")),
+        post_views.PostUpdateView.as_view(),
         name="post_update",
+    ),
+    path(
+        "post/<slug:slug>/delete",
+        post_views.PostDeleteView.as_view(),
+        name="post_delete",
     ),
     path("post_picture/<slug:slug>", post_views.stream_file, name="post_picture"),
 ]

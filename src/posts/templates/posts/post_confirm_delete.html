@@ -1,0 +1,37 @@
+{% extends "base_menu.html" %} {% block content %}
+<div class="py-4 py-lg-8 pb-14">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-xl-8 col-lg-8 col-md-12 col-12 mb-2">
+        <div class="text-center mb-4">
+          <div class="card mb-4 shadow-lg">
+            <!-- Card body -->
+            <div class="card-body">
+              <h3 class="display-3 font-weight-bold mb-4">
+                Delete Ad
+              </h3>
+              <p>
+                Are you sure you want to delete the post: {{ post }}?
+              </p>
+              <hr class="mt-8 mb-5" />
+              <form action="" method="POST">
+                {% csrf_token %}
+                <input
+                  class="btn btn-danger"
+                  type="submit"
+                  value="Yes, delete."
+                />
+                <a
+                  href="{{ request.META.HTTP_REFERER }}"
+                  class="btn btn-success"
+                  ><span class="fa fa-undo"></span> Cancelar</a
+                >
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

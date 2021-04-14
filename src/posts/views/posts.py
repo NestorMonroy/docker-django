@@ -6,10 +6,25 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.contrib.humanize.templatetags.humanize import naturaltime
 
-# Models
 from src.posts.models import Post
-
 from src.posts.forms import PostCreateForm
+from src.utils.owner import OwnerDeleteView
+
+
+class PostDeleteView(OwnerDeleteView):
+    model = Post
+    success_url = reverse_lazy("posts:all")
+
+    def get_object(self, *args, **kwargs):
+        slug = self.kwargs.get("slug")
+        
+        try:
+            instance = Post.objects.get(slug=slug)
+        except Post.DoesNotExist:
+            raise Http404("Not found..")
+        except:
+            raise Http404("??")
+        return instance
 
 
 def stream_file(request, slug):
@@ -40,7 +55,6 @@ class PostDetailView(generic.DetailView):
 
 class PostUpdateView(LoginRequiredMixin, generic.View):
     template_name = "posts/post_form.html"
-    context_object_name = "obj"
     success_url = reverse_lazy("posts:all")
 
     def get(self, request, slug):
@@ -49,7 +63,7 @@ class PostUpdateView(LoginRequiredMixin, generic.View):
         post = get_object_or_404(Post, slug=slug, author=self.request.user)
         form = PostCreateForm(instance=post)
         ctx = {"form": form}
-        #import pdb ;pdb.set_trace()
+        # import pdb ;pdb.set_trace()
         return render(request, self.template_name, ctx)
 
     def post(self, request, slug=None):
@@ -63,7 +77,7 @@ class PostUpdateView(LoginRequiredMixin, generic.View):
 
         post = form.save(commit=False)
         post.save()
-        
+
         return redirect(self.success_url)
 
 
