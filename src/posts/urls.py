@@ -49,10 +49,14 @@ urlpatterns = [
         name="tag_list",
     ),
     path("tag-creation/", tags_views.tag_creation_view, name="tag_create"),
-    # path(
-    #     "validate-tag-edit-or-update/<int:pk>/<slug:action>/",
-    #     validate_update_or_delete_tag_view,
-    #     name="validate_tag_edit_or_update",
-    # ),
-    # path("ajax-update/tag/<int:pk>/", ajax_update_tag_view, name="ajax_update_tag"),
+    path(
+        "tag-edit-or-update/<int:pk>/<slug:action>/",
+        tags_views.update_or_delete_tag_view,
+        name="tag_edit_or_update",
+    ),
+    path(
+        "ajax-update/tag/<int:pk>/",
+        tags_views.ajax_update_tag_view,
+        name="ajax_update_tag",
+    ),
 ]
