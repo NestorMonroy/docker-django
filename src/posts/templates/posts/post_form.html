@@ -9,6 +9,7 @@
   </div>
   <!-- Card Body -->
   <div class="card-body">
+    {% include 'snippets/form_error.html' %}
     <!-- Form -->
     <form method="post" id="upload_post" enctype="multipart/form-data">
       {% csrf_token %}
@@ -36,6 +37,22 @@
         >{% if form.instance.content %}{{form.instance.content}}{% endif %}</textarea>
       </div>
       <div class="form-group mb-4">
+        <label for="id_tag" class="form-label">Tags</label>
+          <select 
+            data-width="100%"
+            class="selectpicker" 
+            multiple data-selected-text-format="count > 3" 
+            name="tags" 
+            id="id_tags"
+            multiple="multiple"
+          >
+            {% for x in form.tags %}
+              {{x}}
+            {% endfor %}
+          </select>
+      </div>
+
+      <div class="form-group mb-4">
         <label for="id_image" class="form-label"
           >Image
           <small class="text-muted">(Upload your Image <= 2.0MB:)</small>
@@ -50,7 +67,6 @@
           <label class="custom-file-label" for="id_image">Choose image</label>
         </div>
       </div>
-
       <div class="form-group mb-4">
         <label for="id_status" class="form-label">Status</label>
         <select
@@ -61,7 +77,7 @@
           required
         >
           <option value="">Select Status</option>
-          {% for pk, choice in form.status.field.widget.choices %}
+          {% for pk, choice in form.fields.status.choices %}
           <option value="{{pk}}"{% if form.status.value == pk %}selected{% endif %}> {{choice}}</option>
           {% endfor %}
         </select>
@@ -87,23 +103,24 @@
       </button>
     </form>
   </div>
+
 </div>
 <!-- https://stackoverflow.com/questions/2472422/django-file-upload-size-limit -->
 
 {% block javascript %}
 <script>
-  $(document).ready(function(){
-    $("#upload_post").submit(function() {
-      console.log('Checking file size');
-      if (window.File && window.FileReader && window.FileList && window.Blob) {
-          var file = $('#id_{{ form.upload_field_name }}')[0].files[0];
-          if (file && file.size > {{ form.max_upload_limit }} ) {
-              alert("File " + file.name + " of type " + file.type + " must be < {{ form.max_upload_limit_text }}");
-          return false;
-        }
+$(document).ready(function(){
+  $("#upload_post").submit(function() {
+    console.log('Checking file size');
+    if (window.File && window.FileReader && window.FileList && window.Blob) {
+        var file = $('#id_{{ form.upload_field_name }}')[0].files[0];
+        if (file && file.size > {{ form.max_upload_limit }} ) {
+            alert("File " + file.name + " of type " + file.type + " must be < {{ form.max_upload_limit_text }}");
+        return false;
       }
-      alert("jQuery is working perfectly.");
-    });
+    }
+    //alert("jQuery is working perfectly.");
   });
+});
 </script>
 {% endblock %} {% endblock%}

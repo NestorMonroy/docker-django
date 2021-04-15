@@ -36,12 +36,16 @@ class PostCreateForm(forms.ModelForm):
     )
     upload_field_name = "image"
     status = forms.ChoiceField(required=True, choices=STATUS)
+    #tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all())
     # Hint: this will need to be changed for use in the ads application :)
     class Meta:
         model = Post
-        fields = ["title", "content", "image", "status"]  # image is manual
+        tags = forms.ModelChoiceField(queryset=Tag.objects.all())
+        fields = ["title", "content", "image", "status", "tags"]  # image is manual
+        # widgets = {
+        #     "tags": forms.SelectMultiple(attrs={"class": "form-control"}),
+        # }
 
-    # Validate the size of the image
     def clean(self):
         cleaned_data = super().clean()
         pic = cleaned_data.get("image")
@@ -55,7 +59,7 @@ class PostCreateForm(forms.ModelForm):
     # Convert uploaded File object to a image
     def save(self, commit=True):
         instance = super(PostCreateForm, self).save(commit=False)
-
+        # tags = self.cleaned_data["tags"]
         # We only need to adjust image if it is a freshly uploaded file
         f = instance.image  # Make a copy
         if isinstance(
@@ -64,8 +68,13 @@ class PostCreateForm(forms.ModelForm):
             bytearr = f.read()
             instance.content_type = f.content_type
             instance.image = bytearr  # Overwrite with the actual image data
+        # instance.tags = self.cleaned_data["tags"]
+        # self.save_m2m()
         # import pdb ;pdb.set_trace()
         if commit:
             instance.save()
 
+        import pdb
+
+        # pdb.set_trace()
         return instance

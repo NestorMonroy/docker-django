@@ -46,7 +46,9 @@ class Post(GralModel):
         settings.AUTH_USER_MODEL, through="Fav", related_name="favorite_post"
     )
 
-    tags = models.ManyToManyField(Tag, blank=True, related_name="tag_post")
+    tags = models.ManyToManyField(
+        Tag, related_name="tag_post", blank=True
+    )
 
     objects = PostManager()
 

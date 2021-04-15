@@ -83,8 +83,19 @@ class PostUpdateView(LoginRequiredMixin, generic.View):
             return render(request, self.template_name, ctx)
 
         post = form.save(commit=False)
-        post.save()
 
+        tags = [s for s in form.cleaned_data["tags"]]
+        post.tags.clear()
+        if tags:
+            # get/create tags and add them to the part
+            for tag in tags:
+                tag, created = Tag.objects.get_or_create(title=tag)
+                post.tags.add(tag)
+        
+        print(tags)
+
+        post.save()
+        #import pdb ;pdb.set_trace()
         return redirect(self.success_url)
 
 
@@ -105,8 +116,17 @@ class PostCreateView(LoginRequiredMixin, generic.View):
             return render(request, self.template_name, ctx)
 
         post = form.save(commit=False)
-        # import pdb ;pdb.set_trace()
+
+        tags = [s for s in form.cleaned_data["tags"]]
         post.author = self.request.user
+        
+        if tags:
+            post.save()
+
+            for tag in tags :
+                tag, create = Tag.objects.get_or_create(title=tag)
+                post.tags.add(tag)
+        #import pdb ;pdb.set_trace()
         post.save()
         return redirect(self.success_url)
 
