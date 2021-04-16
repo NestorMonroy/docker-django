@@ -44,7 +44,7 @@ urlpatterns = [
         name="post_unfavorite",
     ),
     path(
-        "tag/<int:pk>/",
+        "tag/<slug:slug>/",
         tags_views.SearchTagView.as_view(),
         name="tag_list",
     ),

@@ -12,11 +12,15 @@ from src.posts.forms import TagForm
 
 
 class SearchTagView(generic.ListView):
+    paginate_by = 1
     template_name = "tags/tag_list.html"
 
-    def get(self, request, pk):
+    def get(self, *args, **kwargs):
+        request = self.request
+        # title = self.kwargs.get("slug")
+        slug = self.kwargs.get("slug")
         tags = Tag.objects.all()
-        post_tags = Tag.objects.filter(pk=pk)
+        post_tags = Tag.objects.filter(slug=slug)
 
         for tag in post_tags:
             tag = tag.tag_post.all()

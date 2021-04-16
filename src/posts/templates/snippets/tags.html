@@ -7,7 +7,7 @@
     <div class="row">
       {% for tag in tag_list %}
       <div class="mt-3">
-        <a  href="{% url 'posts:tag_list' tag.pk %}" class="btn btn-light btn-xs mb-2">{{tag.title}}</a>
+        <a href="{{tag.get_absolute_url}}" class="btn btn-light btn-xs mb-2">{{tag.title}}</a>
       </div>
       {% endfor %}
     </div>

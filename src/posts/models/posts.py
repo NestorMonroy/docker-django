@@ -20,9 +20,21 @@ from src.utils.extra import upload_post_image_path
 
 class Tag(GralModel):
     title = models.CharField(max_length=120)
+    slug = models.SlugField(unique=True)
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse("posts:tag_list", kwargs={"slug": self.slug})
+
+
+def tag_pre_save_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+
+pre_save.connect(tag_pre_save_receiver, sender=Tag)
 
 
 class Post(GralModel):
@@ -31,7 +43,7 @@ class Post(GralModel):
         max_length=255,
         validators=[MinLengthValidator(2, "Title must be greater than 2 characters")],
     )
-    slug = models.SlugField(unique=True, blank=True, null=True)
+    slug = models.SlugField(unique=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     content = models.TextField(blank=True, null=True)
     image = models.BinaryField(blank=True, null=True, editable=True)
@@ -46,9 +58,7 @@ class Post(GralModel):
         settings.AUTH_USER_MODEL, through="Fav", related_name="favorite_post"
     )
 
-    tags = models.ManyToManyField(
-        Tag, related_name="tag_post", blank=True
-    )
+    tags = models.ManyToManyField(Tag, related_name="tag_post", blank=True)
 
     objects = PostManager()
 

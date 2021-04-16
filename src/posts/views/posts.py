@@ -173,7 +173,7 @@ class CommentDeleteView(owner.OwnerDeleteView):
 @method_decorator(csrf_exempt, name="dispatch")
 class AddFavoriteView(LoginRequiredMixin, generic.View):
     def post(self, request, pk):
-        print("Post PK", pk)
+        # print("Post PK", pk)
         post = get_object_or_404(Post, id=pk)
         fav = Fav(user=request.user, post=post)
         try:
@@ -186,7 +186,7 @@ class AddFavoriteView(LoginRequiredMixin, generic.View):
 @method_decorator(csrf_exempt, name="dispatch")
 class DeleteFavoriteView(LoginRequiredMixin, generic.View):
     def post(self, request, pk):
-        print("Delete PK", pk)
+        # print("Delete PK", pk)
         post = get_object_or_404(Post, id=pk)
         try:
             fav = Fav.objects.get(user=request.user, post=post).delete()
