@@ -91,11 +91,11 @@ class PostUpdateView(LoginRequiredMixin, generic.View):
             for tag in tags:
                 tag, created = Tag.objects.get_or_create(title=tag)
                 post.tags.add(tag)
-        
+
         print(tags)
 
         post.save()
-        #import pdb ;pdb.set_trace()
+        # import pdb ;pdb.set_trace()
         return redirect(self.success_url)
 
 
@@ -119,14 +119,14 @@ class PostCreateView(LoginRequiredMixin, generic.View):
 
         tags = [s for s in form.cleaned_data["tags"]]
         post.author = self.request.user
-        
+
         if tags:
             post.save()
 
-            for tag in tags :
+            for tag in tags:
                 tag, create = Tag.objects.get_or_create(title=tag)
                 post.tags.add(tag)
-        #import pdb ;pdb.set_trace()
+        # import pdb ;pdb.set_trace()
         post.save()
         return redirect(self.success_url)
 
@@ -137,6 +137,7 @@ class PostListView(generic.View):
 
     def get(self, request):
         objects = Post.objects.filter(status=1).order_by("-updated_at")
+        tags = Tag.objects.all()
         query = request.GET.get("search", False)
         for obj in objects:
             obj.natural_updated = naturaltime(obj.updated_at)
@@ -146,8 +147,8 @@ class PostListView(generic.View):
 
         else:
             objects = Post.objects.all().order_by("-updated_at")
-        ctx = {"post_list": objects, "search": query}
-
+        ctx = {"post_list": objects, "search": query, "tag_list": tags}
+        # import pdb ;pdb.set_trace()
         return render(request, self.template_name, ctx)
 
 

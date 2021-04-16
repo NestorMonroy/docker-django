@@ -1,6 +1,4 @@
 {% extends "base_menu.html" %} 
-{% load humanize %}
-{% load static %}
 {% block content %}
 <!-- Content-->
 <div class="pb-16 mt-5">
@@ -9,212 +7,22 @@
       <div class="col-lg-8 col-md-7 col-12">
         {% if post_list %}
         <div class="row">
-          {% for post in post_list %}
-          <div class="col-lg-6 col-md-12 col-12">
-            <!-- Card -->
-            <div class="card mb-4 shadow-lg">
-              {% if post.content_type %}
-              <a href="{{post.get_absolute_url}}" class="card-img-top">
-                <!-- Img  -->
-                <img
-                  src="{% url 'posts:post_picture' post.slug %}"
-                  class="card-img-top rounded-top"
-                  alt=""
-              /></a>
-              {% endif %}
-              <!-- Card body -->
-              <div class="card-body">
-                <h3>
-                  <a href="{{post.get_absolute_url}}" class="text-inherit">
-                    {{post.title}}
-                  </a>
-                </h3>
-                <p>
-                  {{post.content|linebreaks|truncatewords:30 }}
-                </p>
-                <!-- Media content -->
-                <div class="row align-items-center no-gutters mt-4">
-                  {% if post.author.profile.picture %}
-                  <div class="col-auto">
-                    <img
-                      src="{{post.author.profile.picture.url}}"
-                      alt="avatar"
-                      class="rounded-circle avatar-sm mr-2"
-                    />
-                  </div>
-                  {% else %}
-                  <div class="col-auto">
-                    <img
-                      alt="avatar"
-                      src="{% static 'images/default-profile.png' %}"
-                      class="rounded-circle avatar-sm mr-2"
-                    />
-                  </div>
-                  {% endif %}
-                  <div class="col lh-1">
-                    <h5 class="mb-1">{{post.author}}</h5>
-                    <p class="font-size-xs mb-0">
-                      {{ post.updated_at|naturaltime }}
-                    </p>
-                  </div>
-                  <div class="col-auto">
-                    <p class="font-size-xs mb-0">20 Min Read</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          {% for post in post_list %} 
+            {% include 'snippets/card.html' with obj=post %} 
           {% endfor %}
-          <!-- Buttom -->
-          <div class="col-xl-12 col-lg-12 col-md-12 col-12 mt-4">
-            <a href="#!" class="btn btn-primary">
-              <div class="spinner-border spinner-border-sm mr-2" role="status">
-                <span class="sr-only">Loading...</span>
-              </div>
-              Load More
-            </a>
-          </div>
         </div>
-
+        
+        {% include 'snippets/pagination.html' %}
         {% else %}
         <p>There are no post in the database.</p>
         {% endif %}
       </div>
 
       <div class="col-lg-4 col-md-5 col-12 mt-6 mt-md-0">
-        <!-- search -->
-        <div class="mb-4">
-          <div class="mb-3 position-relative">
-            <form>
-              <input type="search" class="form-control" placeholder="Search.." name="search" {% if search %} value="{{ search }}" {% endif %}>
-            </form>
-            <span class="position-absolute end-0 top-0 lh-lg my-1 me-4"
-              ><i class="bi bi-search fs-5"></i
-            ></span>
-          </div>
-        </div>
-        <!-- card -->
-        <div class="card mb-4 border">
-          <!-- card body -->
-          <div class="card-body p-4">
-            <h3>Recent Posts</h3>
-            <div class="mt-3">
-              <!-- list -->
-              <ul class="list-unstyled mb-0">
-                <li class="mb-3">
-                  <h4 class="lh-lg">
-                    <a href="#" class="text-inherit">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing
-                      elit.</a
-                    >
-                  </h4>
-                </li>
-                <li class="mb-3">
-                  <h4 class="lh-lg">
-                    <a href="#" class="text-inherit">
-                      Duis placerat mi quis purus feugiat, at bibendum arcu
-                      dignissim.</a
-                    >
-                  </h4>
-                </li>
-                <li class="mb-3">
-                  <h4 class="lh-lg">
-                    <a href="#" class="text-inherit">
-                      Morbi sit amet metus nec elit hendrerit luctus.</a
-                    >
-                  </h4>
-                </li>
-                <li>
-                  <h4 class="lh-lg">
-                    <a href="#" class="text-inherit">
-                      Vivamus ac sapien ultricies dolor ullamcorper
-                      porttitor.</a
-                    >
-                  </h4>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <!-- card -->
-        <div class="card mb-4 border">
-          <!-- card body -->
-          <div class="card-body p-4">
-            <h3>Categories</h3>
-            <div class="mt-3">
-              <!-- list -->
-              <ul class="list-unstyled mb-0 nav nav-x-0 flex-column">
-                <li class="lh-lg mb-1">
-                  <i class="fe fe-arrow-right text-muted"></i>
-                  <a href="#" class="text-link d-inline"> Business</a>
-                </li>
-                <li class="lh-lg mb-1">
-                  <i class="fe fe-arrow-right text-muted"></i>
-                  <a href="#" class="text-link d-inline"> Marketing</a>
-                </li>
-                <li class="lh-lg mb-1">
-                  <i class="fe fe-arrow-right text-muted"></i>
-                  <a href="#" class="text-link d-inline"> Courses</a>
-                </li>
-                <li class="lh-lg mb-1">
-                  <i class="fe fe-arrow-right text-muted"></i>
-                  <a href="#" class="text-link d-inline"> Dashboard</a>
-                </li>
-                <li class="lh-lg mb-1">
-                  <i class="fe fe-arrow-right text-muted"></i>
-                  <a href="#" class="text-link d-inline"> Landings</a>
-                </li>
-                <li class="lh-lg mb-1">
-                  <i class="fe fe-arrow-right text-muted"></i>
-                  <a href="#" class="text-link d-inline"> E-commerce</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <!-- card -->
-        <div class="card mb-4 border">
-          <!-- card body -->
-          <div class="card-body p-4">
-            <h3>Archive</h3>
-            <div class="mt-3">
-              <!-- list -->
-              <ul class="list-unstyled mb-0 nav nav-x-0 flex-column">
-                <li class="lh-lg mb-1">
-                  <i class="fe fe-arrow-right text-muted"></i>
-                  <a href="#" class="text-link d-inline"> March 2021</a>
-                </li>
-                <li class="lh-lg mb-1">
-                  <i class="fe fe-arrow-right text-muted"></i>
-                  <a href="#" class="text-link d-inline"> February 2021</a>
-                </li>
-                <li class="lh-lg mb-1">
-                  <i class="fe fe-arrow-right text-muted"></i>
-                  <a href="#" class="text-link d-inline"> January 2021</a>
-                </li>
-                <li class="lh-lg mb-1">
-                  <i class="fe fe-arrow-right text-muted"></i>
-                  <a href="#" class="text-link d-inline"> December 2020</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <!-- card -->
-        <div class="card mb-4 border">
-          <!-- card body -->
-          <div class="card-body p-4">
-            <h3>Tags</h3>
-            <div class="mt-3">
-              <a href="#" class="btn btn-light btn-xs mb-2">business</a>
-              <a href="#" class="btn btn-light btn-xs mb-2">e-commerce</a>
-              <a href="#" class="btn btn-light btn-xs mb-2">course</a>
-              <a href="#" class="btn btn-light btn-xs mb-2">dashboard</a>
-              <a href="#" class="btn btn-light btn-xs mb-2">landings</a>
-              <a href="#" class="btn btn-light btn-xs mb-2">marketing</a>
-            </div>
-          </div>
-        </div>
+        {% include 'snippets/search-form.html' %} 
+        {% include 'snippets/recent_posts.html' %} 
+        {% include 'snippets/archive.html' %} 
+        {% include 'snippets/tags.html' %}
       </div>
     </div>
   </div>

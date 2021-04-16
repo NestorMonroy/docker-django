@@ -73,7 +73,7 @@
                 <i class="fe fe-power nav-icon mr-2"></i>Sign Out
               </a>
               {% if user.is_staff %}
-              <a class="dropdown-item" href="{% url 'posts:tag_list' %}">
+              <a class="dropdown-item" href="{% url 'posts:tag_list_create' %}">
                 <i class="fe fe-zap nav-icon mr-2"></i>Tags
               </a>
               {% endif %}
@@ -199,7 +199,7 @@
                 </a>
               </li>
               {% if user.is_staff %}
-                <a class="dropdown-item" href="{% url 'posts:tag_list' %}">
+                <a class="dropdown-item" href="{% url 'posts:tag_list_create' %}">
                   <i class="fe fe-zap mr-2"></i>Tags
                 </a>
               {% endif %}

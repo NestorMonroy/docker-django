@@ -44,9 +44,14 @@ urlpatterns = [
         name="post_unfavorite",
     ),
     path(
-        "tag/",
-        tags_views.TagListView.as_view(),
+        "tag/<int:pk>/",
+        tags_views.SearchTagView.as_view(),
         name="tag_list",
+    ),
+    path(
+        "tag_list_create/",
+        tags_views.TagListView.as_view(),
+        name="tag_list_create",
     ),
     path("tag-creation/", tags_views.tag_creation_view, name="tag_create"),
     path(

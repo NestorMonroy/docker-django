@@ -3,6 +3,7 @@ from django.views import generic
 from django.shortcuts import get_object_or_404, HttpResponseRedirect, reverse
 from django.template.loader import render_to_string
 from django.utils.decorators import method_decorator
+from django.shortcuts import render
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 
@@ -10,10 +11,25 @@ from src.posts.models import Tag
 from src.posts.forms import TagForm
 
 
+class SearchTagView(generic.ListView):
+    template_name = "tags/tag_list.html"
+
+    def get(self, request, pk):
+        tags = Tag.objects.all()
+        post_tags = Tag.objects.filter(pk=pk)
+
+        for tag in post_tags:
+            tag = tag.tag_post.all()
+
+        ctx = {"tag_result": tag, "tag_list": tags}
+
+        return render(request, self.template_name, ctx)
+
+
 @method_decorator(staff_member_required, name="dispatch")
 class TagListView(generic.ListView):
-    template_name = "tags/tag_list.html"
-    model = Tag
+    template_name = "tags/tag_list_create.html"
+    # model = Tag
     paginate_by = 20
 
     def get_queryset(self):

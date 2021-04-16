@@ -1,0 +1,55 @@
+{% load humanize %} {% load static %}
+<div class="col-lg-6 col-md-12 col-12">
+  <!-- Card -->
+  <div class="card mb-4 shadow-lg">
+    {% if obj.content_type %}
+    <a href="{{obj.get_absolute_url}}" class="card-img-top">
+      <!-- Img  -->
+      <img
+        src="{% url 'posts:post_picture' obj.slug %}"
+        class="card-img-top rounded-top"
+        alt=""
+    /></a>
+    {% endif %}
+    <!-- Card body -->
+    <div class="card-body">
+      <h3>
+        <a href="{{obj.get_absolute_url}}" class="text-inherit">
+          {{obj.title}}
+        </a>
+      </h3>
+      <p>
+        {{obj.content|linebreaks|truncatewords:30 }}
+      </p>
+      <!-- Media content -->
+      <div class="row align-items-center no-gutters mt-4">
+        {% if obj.author.profile.picture %}
+        <div class="col-auto">
+          <img
+            src="{{obj.author.profile.picture.url}}"
+            alt="avatar"
+            class="rounded-circle avatar-sm mr-2"
+          />
+        </div>
+        {% else %}
+        <div class="col-auto">
+          <img
+            alt="avatar"
+            src="{% static 'images/default-profile.png' %}"
+            class="rounded-circle avatar-sm mr-2"
+          />
+        </div>
+        {% endif %}
+        <div class="col lh-1">
+          <h5 class="mb-1">{{obj.author}}</h5>
+          <p class="font-size-xs mb-0">
+            {{ obj.updated_at|naturaltime }}
+          </p>
+        </div>
+        <div class="col-auto">
+          <p class="font-size-xs mb-0">20 Min Read</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
