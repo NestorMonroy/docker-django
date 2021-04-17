@@ -5,9 +5,9 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-7 col-12">
-        {% if post_list %}
+        {% if instance %}
         <div class="row">
-          {% for post in post_list %} 
+          {% for post in instance %} 
             {% include 'snippets/card.html' with obj=post %} 
           {% endfor %}
         </div>

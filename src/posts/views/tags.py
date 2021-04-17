@@ -4,11 +4,31 @@ from django.shortcuts import get_object_or_404, HttpResponseRedirect, reverse
 from django.template.loader import render_to_string
 from django.utils.decorators import method_decorator
 from django.shortcuts import render
+from django.core.paginator import Paginator
+
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 
 from src.posts.models import Tag
 from src.posts.forms import TagForm
+
+
+def search_tag(request, slug):
+    path = "tags/tag_list.html"
+    page = request.GET.get("page")
+    tags = Tag.objects.all()
+    #print(slug)
+    #slug = self.kwargs.get("slug")
+    post_tags = Tag.objects.filter(slug=slug)
+
+    for tag in post_tags:
+        tag = tag.tag_post.all()
+
+    paginator = Paginator(tag, 10)
+
+    objects = paginator.get_page(page)
+    ctx = {"instance": objects, "tag_list": tags}
+    return render(request, path, ctx)
 
 
 class SearchTagView(generic.ListView):

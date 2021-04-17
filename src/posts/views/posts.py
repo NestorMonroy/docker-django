@@ -3,6 +3,7 @@ from django.http import request, HttpResponse
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -131,25 +132,49 @@ class PostCreateView(LoginRequiredMixin, generic.View):
         return redirect(self.success_url)
 
 
-class PostListView(generic.View):
-    model = Post
-    template_name = "posts/post_list.html"
+def post_list(request):
+    path = "posts/post_list.html"
+    page = request.GET.get("page")
+    query = request.GET.get("search", False)
+    tags = Tag.objects.all()
+    recent_post = Post.objects.all().order_by("-updated_at")[:5]
 
-    def get(self, request):
-        objects = Post.objects.filter(status=1).order_by("-updated_at")
-        tags = Tag.objects.all()
-        query = request.GET.get("search", False)
-        for obj in objects:
-            obj.natural_updated = naturaltime(obj.updated_at)
+    if query:
+        post = Post.objects.search(query)
+    else:
+        post = Post.objects.all().order_by("-updated_at")
 
-        if query:
-            objects = Post.objects.search(query)
+    paginator = Paginator(post, 10)
 
-        else:
-            objects = Post.objects.all().order_by("-updated_at")
-        ctx = {"post_list": objects, "search": query, "tag_list": tags}
-        # import pdb ;pdb.set_trace()
-        return render(request, self.template_name, ctx)
+    objects = paginator.get_page(page)
+    ctx = {"instance": objects, "tag_list": tags, "recent_post": recent_post}
+
+    return render(request, path, ctx)
+
+
+# class PostListView(generic.View):
+#     model = Post
+#     template_name = "posts/post_list.html"
+#     paginate_by = 10
+#     Show 25 contacts per page.
+
+#     def get(self, request):
+#         # objects = Post.objects.filter(status=1).order_by("-updated_at")[:1]
+#         tags = Tag.objects.all()
+#         query = request.GET.get("search", False)
+#         # for obj in objects:
+#         #     obj.natural_updated = naturaltime(obj.updated_at)
+
+#         if query:
+#             objects = Post.objects.search(query)
+
+#         else:
+#             objects = Post.objects.all().order_by("-updated_at")
+
+#         objects = Paginator(objects, 1)
+#         ctx = {"post_list": objects, "search": query, "tag_list": tags}
+#         # import pdb ;pdb.set_trace()
+#         return render(request, self.template_name, ctx)
 
 
 class CommentCreateView(LoginRequiredMixin, generic.View):

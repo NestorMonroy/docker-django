@@ -5,7 +5,7 @@ from src.posts.views import tags as tags_views
 app_name = "posts"
 
 urlpatterns = [
-    path("", post_views.PostListView.as_view(), name="all"),
+    path("", post_views.post_list, name="all"),
     path("post/<slug:slug>/", post_views.PostDetailView.as_view(), name="post_detail"),
     path(
         "post/create",
@@ -45,7 +45,7 @@ urlpatterns = [
     ),
     path(
         "tag/<slug:slug>/",
-        tags_views.SearchTagView.as_view(),
+        tags_views.search_tag,
         name="tag_list",
     ),
     path(

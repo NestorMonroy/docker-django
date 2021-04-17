@@ -5,37 +5,27 @@
     <h3>Recent Posts</h3>
     <div class="mt-3">
       <!-- list -->
+      {% if recent_post %}
+      <ul class="list-unstyled mb-0">
+        {% for obj in recent_post %}
+        <li class="mb-3">
+          <h4 class="lh-lg">
+            <a href="{{obj.get_absolute_url}}" class="text-inherit">
+              {{obj.title}}
+            </a>
+          </h4>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
       <ul class="list-unstyled mb-0">
         <li class="mb-3">
           <h4 class="lh-lg">
-            <a href="#" class="text-inherit">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.</a
-            >
-          </h4>
-        </li>
-        <li class="mb-3">
-          <h4 class="lh-lg">
-            <a href="#" class="text-inherit">
-              Duis placerat mi quis purus feugiat, at bibendum arcu
-              dignissim.</a
-            >
-          </h4>
-        </li>
-        <li class="mb-3">
-          <h4 class="lh-lg">
-            <a href="#" class="text-inherit">
-              Morbi sit amet metus nec elit hendrerit luctus.</a
-            >
-          </h4>
-        </li>
-        <li>
-          <h4 class="lh-lg">
-            <a href="#" class="text-inherit">
-              Vivamus ac sapien ultricies dolor ullamcorper porttitor.</a
-            >
+            <a class="text-inherit"> SIN POST :(</a>
           </h4>
         </li>
       </ul>
+      {% endif%}
     </div>
   </div>
 </div>
