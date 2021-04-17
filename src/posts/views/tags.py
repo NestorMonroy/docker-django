@@ -9,7 +9,7 @@ from django.core.paginator import Paginator
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 
-from src.posts.models import Tag
+from src.posts.models import Tag, Post
 from src.posts.forms import TagForm
 
 
@@ -17,8 +17,8 @@ def search_tag(request, slug):
     path = "tags/tag_list.html"
     page = request.GET.get("page")
     tags = Tag.objects.all()
-    #print(slug)
-    #slug = self.kwargs.get("slug")
+    recent_post = Post.objects.all().order_by("-updated_at")[:5]
+    
     post_tags = Tag.objects.filter(slug=slug)
 
     for tag in post_tags:
@@ -27,7 +27,7 @@ def search_tag(request, slug):
     paginator = Paginator(tag, 10)
 
     objects = paginator.get_page(page)
-    ctx = {"instance": objects, "tag_list": tags}
+    ctx = {"instance": objects, "tag_list": tags, "recent_post": recent_post}
     return render(request, path, ctx)
 
 

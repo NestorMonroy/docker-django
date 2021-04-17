@@ -5,7 +5,6 @@
 "use strict";
 
 (function () {
-
   $(".handle_tag").click(function (e) {
     e.preventDefault();
 
@@ -25,4 +24,6 @@
     });
     //alert("aca Nestor Update");
   });
+  var ano = new Date().getFullYear();
+  $("#yearf").text(ano);
 })();
