@@ -146,7 +146,9 @@ MANAGERS = ADMINS
 # User & Authentication
 AUTH_USER_MODEL = "users.User"
 
-LOGOUT_REDIRECT_URL = "/login/"
+LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'users:login'
+LOGOUT_REDIRECT_URL = 'users:login'
 
 DEFAULT_ACTIVATION_DAYS = 7
 

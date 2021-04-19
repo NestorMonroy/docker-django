@@ -6,13 +6,14 @@ from django.conf.urls.static import static
 from django.contrib import admin
 
 
-#import ipdb; ipdb.set_trace()
+# import ipdb; ipdb.set_trace()
 
 urlpatterns = [
     # Django Admin
     path(settings.ADMIN_URL, admin.site.urls),
-    path('', include(('src.posts.urls', 'posts'), namespace='posts')),
-    path('', include(('src.users.urls', 'users'), namespace='users')),
+    path("", include(("src.posts.urls", "posts"), namespace="posts")),
+    path("", include(("src.users.urls", "users"), namespace="users")),
+    path("profile/", include(("src.users.profile_urls", "profile"), namespace="profile")),
 
-
+    # path("profile/", include("src.users.profile_urls"), namespace="profile")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

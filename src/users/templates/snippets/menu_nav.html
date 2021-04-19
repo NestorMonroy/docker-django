@@ -1,0 +1,85 @@
+<div class="col-lg-3 col-md-4 col-12">
+  <!-- Side navbar -->
+  <nav
+    class="navbar navbar-expand-md navbar-light shadow-sm mb-4 mb-lg-0 small-sidenav"
+  >
+    <!-- Menu -->
+    <a
+      class="d-xl-none d-lg-none d-md-none text-inherit font-weight-bold"
+      href="#!"
+      >Menu</a
+    >
+    <!-- Button -->
+    <button
+      class="navbar-toggler d-md-none icon-shape icon-sm rounded bg-primary text-light"
+      type="button"
+      data-toggle="collapse"
+      data-target="#smallSidenav"
+      aria-controls="smallSidenav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="fe fe-menu"></span>
+    </button>
+    <!-- Collapse navbar -->
+    <div class="collapse navbar-collapse" id="smallSidenav">
+      <div class="navbar-nav flex-column">
+        <span class="navbar-header">General</span>
+        <!-- List -->
+        <ul class="list-unstyled ml-n2 mb-4">
+          <!-- Nav item -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'profile:home' %}"
+              ><i class="fe fe-calendar nav-icon"></i>My Post</a
+            >
+          </li>
+        </ul>
+        <span class="navbar-header">Account Settings</span>
+        <!-- List -->
+        <ul class="list-unstyled ml-n2 mb-0">
+          <!-- Nav item -->
+          <li class="nav-item">
+            <a class="nav-link" href=""
+              ><i class="fe fe-settings nav-icon"></i>Edit Profile</a
+            >
+          </li>
+          <!-- Nav item -->
+          <li class="nav-item">
+            <a class="nav-link" href=""
+              ><i class="fe fe-user nav-icon"></i>Security</a
+            >
+          </li>
+          <!-- Nav item -->
+          <li class="nav-item">
+            <a class="nav-link" href=""
+              ><i class="fe fe-refresh-cw nav-icon"></i>Social Profiles</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href=""
+              ><i class="fe fe-bell nav-icon"></i>Notifications</a
+            >
+          </li>
+          <!-- Nav item -->
+          <li class="nav-item">
+            <a class="nav-link" href=""
+              ><i class="fe fe-lock nav-icon"></i>Profile Privacy</a
+            >
+          </li>
+          <!-- Nav item -->
+          <li class="nav-item">
+            <a class="nav-link" href=""
+              ><i class="fe fe-trash nav-icon"></i>Delete Profile</a
+            >
+          </li>
+          <!-- Nav item -->
+          <li class="nav-item">
+            <a class="nav-link" href=""
+              ><i class="fe fe-power nav-icon"></i>Sign Out</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>

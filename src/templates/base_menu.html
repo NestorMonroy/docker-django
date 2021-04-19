@@ -69,6 +69,10 @@
           <div class="dropdown-divider"></div>
           <ul class="list-unstyled">
             <li>
+              <a class="dropdown-item" href="{% url 'profile:home' %}">
+                <i class="fe fe-user nav-icon mr-2"></i>Profile
+              </a>
+
               <a class="dropdown-item" href="{% url 'users:logout' %}">
                 <i class="fe fe-power nav-icon mr-2"></i>Sign Out
               </a>
@@ -194,6 +198,10 @@
             <div class="dropdown-divider"></div>
             <ul class="list-unstyled">
               <li>
+                <a class="dropdown-item" href="{% url 'profile:home' %}">
+                  <i class="fe fe-user nav-icon mr-2"></i>Profile
+                </a>
+                
                 <a class="dropdown-item" href="{% url 'users:logout' %}">
                   <i class="fe fe-power mr-2"></i>Sign Out
                 </a>

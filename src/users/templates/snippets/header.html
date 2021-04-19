@@ -1,0 +1,48 @@
+{% load static %}
+
+<div class="pt-5">
+  <div class="container">
+    <!-- User info -->
+    <div class="row align-items-center">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+        <!-- Bg -->
+        <div
+          class="pt-16 rounded-top"
+          style="
+            background: url({%static 'images/profile-bg.jpg' %}) no-repeat;
+            background-size: cover;
+          "
+        ></div>
+        <div
+          class="d-flex align-items-end justify-content-between bg-white px-4 pt-2 pb-4 rounded-none rounded-bottom shadow-sm"
+        >
+          <div class="d-flex align-items-center">
+            <div
+              class="mr-2 position-relative d-flex justify-content-end align-items-end mt-n5"
+            >
+              {% if user.author.picture %}
+              <img
+                src="{{user.author.picture.url}}"
+                class="avatar-xl rounded-circle border-width-4 border-white"
+                alt=""
+              />
+            </div>
+            {% else %}
+            <img
+              src="{% static 'images/default-profile.png' %}"
+              class="avatar-xl rounded-circle border-width-4 border-white"
+              alt=""
+            />
+            {% endif %}
+            <div class="lh-1">
+              <h2 class="mb-0">
+                {{user.get_full_name}}
+              </h2>
+              <p class="mb-0 d-block">{{user}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
