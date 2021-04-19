@@ -1,18 +1,48 @@
-{% extends "base.html" %} {% block content %}
-<div class="row">
-  <div class="col-12 text-center py-5">
-    {% if key %}
-    <h1 class="my-5 py-5">Activation Error. Please try again.</h1>
-    {% else %}
-    <h1 class="my-5 py-5">Re-activate your Email Below.</h1>
-    {% endif %}
-  </div>
-  <div class="col-12 text-center">
-    <form method="POST" action="">
-      {% csrf_token %} 
-      {{ form.as_p }}
-      <input class="btn btn-default" type="submit" value="Resend Activation" />
-    </form>
+{% extends "base.html" %} {% block content %} {% load static %}
+<div class="container d-flex flex-column">
+  <div
+    class="row align-items-center justify-content-center no-gutters min-vh-100"
+  >
+    <div class="col-lg-5 col-md-8 py-8 py-xl-0">
+      <!-- Card -->
+      <div class="card shadow">
+        <!-- Card body -->
+        <div class="card-body p-6">
+          <div class="mb-4">
+            <a href="{% url 'posts:all' %}"
+              ><img
+                src="{% static 'images/red-dimond.svg' %}"
+                class="mb-4"
+                alt=""
+            /></a>
+            {% if key %}
+              <h3 class="mb-1 text-center">Activation Error. Please try again.</h3>
+            {% else %}
+              <h3 class="mb-1 text-center">Re-activate your Email Below.</h3>
+            {% endif %}
+          </div>
+          {% include 'snippets/form_error.html' %}
+          <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="email" class="form-label">Email</label>
+              <input
+                type="email"
+                id="email"
+                class="form-control"
+                name="email"
+                placeholder="Email address here"
+                required
+              />
+            </div>
+            <div>
+              <button type="submit" class="btn btn-primary btn-block">
+                Resend Activation
+              </button>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}

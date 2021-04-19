@@ -1,5 +1,6 @@
 from django.views import generic
 from django.urls import reverse_lazy
+from django.http import request, HttpResponse
 from django.contrib import messages
 from django.shortcuts import redirect, render
 from src.users.forms import SignupForm, LoginForm, ReactivateEmailForm
@@ -78,3 +79,9 @@ class SingupView(generic.CreateView):
     template_name = "users/signup.html"
     form_class = SignupForm
     success_url = reverse_lazy("users:login")
+
+    def form_valid(self, form):
+        msg = """Check Your Email To Activate Your Account!"""
+        request = self.request
+        messages.success(request, msg)        
+        return super(SingupView, self).form_valid(form)

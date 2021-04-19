@@ -7,10 +7,8 @@
       {% if form.instance.pk >= 1 %} Edit Post {% else %} Add Post {% endif %}
     </h4>
   </div>
-  <!-- Card Body -->
   <div class="card-body">
     {% include 'snippets/form_error.html' %}
-    <!-- Form -->
     <form method="post" id="upload_post" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="form-group mb-4">

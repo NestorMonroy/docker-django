@@ -18,17 +18,7 @@
               <a href="{% url 'users:login' %}" class="ml-1">Sign in</a></span
             >
           </div>
-
-          {% if form.errors %}
-            {% for field in form %}
-              {% for error in field.errors %} 
-                <div class="alert alert-danger">
-                  <strong>{{ error|escape }}</strong>
-                </div>
-              {% endfor %}
-            {% endfor %}
-          {% endif %}
-
+          {% include 'snippets/form_error.html' %}
           <form method="POST">
             {% csrf_token %}
             <div class="form-group">

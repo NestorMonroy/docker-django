@@ -16,20 +16,31 @@
               <a href="{% url 'users:signup' %}" class="ml-1">Sign up</a></span
             >
           </div>
-          {% if form.errors %}
-          {% for field in form %}
-            {% for error in field.errors %} 
-              <div class="alert alert-danger">
-                <strong>{{ error|escape }}</strong>
-              </div>
-            {% endfor %}
-          {% endfor %}
-        {% endif %}
-        
-          <!-- Form -->
+          {% include 'snippets/form_error.html' %}
           <form  method="POST">
-            {% csrf_token %}  
-            {{form.as_p}}
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="email" class="form-label">Email</label>
+              <input
+                type="email"
+                id="email"
+                class="form-control"
+                name="email"
+                placeholder="Email address here"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="password" class="form-label">Password</label>
+              <input
+                type="password"
+                id="password"
+                class="form-control"
+                name="password"
+                placeholder="**************"
+                required
+              />
+            </div>
             <div>
               <button type="submit" class="btn btn-primary btn-block">
                 Sign in
