@@ -1,11 +1,19 @@
 """ User model"""
 from django.db import models
+from django.conf import settings
+from django.urls import reverse
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.validators import RegexValidator
 from django.utils.translation import gettext_lazy as _
 
+from django.db.models.signals import pre_save, post_save
+
+from django.core.mail import send_mail
+from django.template.loader import get_template
+
 from src.utils.models import GralModel
-from .managers import UserManager
+from src.utils.extra import unique_key_generator
+from .managers import UserManager, EmailActivationManager
 
 
 class User(PermissionsMixin, GralModel, AbstractBaseUser):
@@ -78,5 +86,73 @@ class EmailActivation(GralModel):
     forced_expired = models.BooleanField(default=False)
     expires = models.IntegerField(default=7)  # 7 Days
 
+    objects = EmailActivationManager()
+
     def __str__(self):
         return self.email
+
+    def can_activate(self):
+        qs = EmailActivation.objects.filter(pk=self.pk).confirmable()
+        if qs.exists():
+            return True
+        return False
+
+    def activate(self):
+        if self.can_activate():
+            user = self.user
+            user.is_active = True
+            user.save()
+            self.activated = True
+            self.save()
+            return True
+        return False
+
+    def regenerate(self):
+        self.key = None
+        self.save()
+        if self.key is not None:
+            return True
+        return False
+
+    def send_activation(self):
+        if not self.activated and not self.forced_expired:
+            if self.key:
+                base_url = getattr(settings, "BASE_URL", "http://0.0.0.0:8000")
+                key_path = reverse(
+                    "users:email-activate", kwargs={"key": self.key}
+                )  # use reverse
+                path = "{base}{path}".format(base=base_url, path=key_path)
+                context = {"path": path, "email": self.email}
+                txt_ = get_template("registration/emails/verify.txt").render(context)
+                html_ = get_template("registration/emails/verify.html").render(context)
+                subject = "1-Click Email Verification"
+                from_email = settings.ADMINS
+                recipient_list = [self.email]
+                e_mail = send_mail(
+                    subject,
+                    txt_,
+                    from_email,
+                    recipient_list,
+                    html_message=html_,
+                    fail_silently=False,
+                )
+                return e_mail
+        return False
+
+
+def pre_save_email_activation(sender, instance, *args, **kwargs):
+    if not instance.activated and not instance.forced_expired:
+        if not instance.key:
+            instance.key = unique_key_generator(instance)
+
+
+pre_save.connect(pre_save_email_activation, sender=EmailActivation)
+
+
+def post_save_user_create_reciever(sender, instance, created, *args, **kwargs):
+    if created:
+        obj = EmailActivation.objects.create(user=instance, email=instance.email)
+        obj.send_activation()
+
+
+post_save.connect(post_save_user_create_reciever, sender=User)
