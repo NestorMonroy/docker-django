@@ -5,10 +5,10 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 # Models
-from src.users.models import User, Profile
+from src.users.models import User, Profile, EmailActivation
 
 admin.site.register(User)
-
+admin.site.register(EmailActivation)
 
 # class CustomUserAdmin(UserAdmin):
 #     """User model admin."""

@@ -8,7 +8,7 @@ from src.utils.models import GralModel
 from .managers import UserManager
 
 
-class User(GralModel, AbstractBaseUser, PermissionsMixin):
+class User(PermissionsMixin, GralModel, AbstractBaseUser):
     """User model.
     Extend from Django's Abstract User, change the username field to email and
     add some extra fields
@@ -67,4 +67,16 @@ class User(GralModel, AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         """Return email. """
+        return self.email
+
+
+class EmailActivation(GralModel):
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    email = models.EmailField()
+    key = models.CharField(max_length=120, blank=True, null=True)
+    activated = models.BooleanField(default=False)
+    forced_expired = models.BooleanField(default=False)
+    expires = models.IntegerField(default=7)  # 7 Days
+
+    def __str__(self):
         return self.email
