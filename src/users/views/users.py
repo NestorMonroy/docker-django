@@ -1,7 +1,7 @@
 from django.views import generic
 from django.urls import reverse_lazy
 from django.contrib import messages
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from src.users.forms import SignupForm, LoginForm, ReactivateEmailForm
 
 from src.utils.mixins import NextUrlMixin, RequestFormAttachMixin

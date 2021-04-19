@@ -28,31 +28,8 @@
         
           <!-- Form -->
           <form  method="POST">
-            {% csrf_token %}
-            <!-- Username -->
-            <div class="form-group">
-              <label for="email" class="form-label">Email</label>
-              <input
-                type="email"
-                id="email"
-                class="form-control"
-                name="email"
-                placeholder="Email address here"
-                required
-              />
-            </div>
-            <!-- Password -->
-            <div class="form-group">
-              <label for="password" class="form-label">Password</label>
-              <input
-                type="password"
-                id="password"
-                class="form-control"
-                name="password"
-                placeholder="**************"
-                required
-              />
-            </div>
+            {% csrf_token %}  
+            {{form.as_p}}
             <div>
               <button type="submit" class="btn btn-primary btn-block">
                 Sign in

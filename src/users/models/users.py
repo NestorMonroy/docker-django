@@ -100,7 +100,7 @@ class EmailActivation(GralModel):
     def activate(self):
         if self.can_activate():
             user = self.user
-            user.is_active = True
+            user.is_verified = True
             user.save()
             self.activated = True
             self.save()

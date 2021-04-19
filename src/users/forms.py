@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model, authenticate, login
+from django.shortcuts import reverse
 from django.core.validators import RegexValidator
 from django.contrib import messages
 from django.utils.safestring import mark_safe
@@ -44,7 +45,7 @@ class LoginForm(forms.Form):
         qs = User.objects.filter(email=email)
         if qs.exists():
             # user email is registered, check active/
-            not_active = qs.filter(is_active=False)
+            not_active = qs.filter(is_verified=False)
             if not_active.exists():
                 ## not active, check email activation
                 link = reverse("users:resend-activation")
