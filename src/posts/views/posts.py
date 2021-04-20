@@ -93,7 +93,7 @@ class PostUpdateView(LoginRequiredMixin, generic.View):
                 tag, created = Tag.objects.get_or_create(title=tag)
                 post.tags.add(tag)
 
-        print(tags)
+        #print(tags)
 
         post.save()
         # import pdb ;pdb.set_trace()

@@ -13,6 +13,36 @@ from .signals import user_logged_in
 User = get_user_model()
 
 
+class UserDetailChangeForm(forms.ModelForm):
+    first_name = forms.CharField(
+        label="First name",
+        required=False,
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+    )
+
+    last_name = forms.CharField(
+        label="Last name",
+        required=False,
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+    )
+
+    class Meta:
+        model = User
+        fields = ["first_name", "last_name"]
+
+
+class ProfileDetailChangeForm(forms.ModelForm):
+    biography = forms.CharField(
+        label="biography",
+        required=False,
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+    )
+
+    class Meta:
+        model = Profile
+        fields = ("biography",)
+
+
 class ReactivateEmailForm(forms.Form):
     email = forms.EmailField()
 

@@ -1,0 +1,35 @@
+{% extends "base_menu.html" %} {% load static %} {% block content %}
+
+{% include "snippets/header.html" %}
+
+<!-- Content -->
+<div class="pb-5 py-md-5">
+  <div class="container">
+    <div class="row">
+      {% include "snippets/menu_nav.html" %}
+
+      <div class="col-lg-9 col-md-8 col-12">
+        <!-- Card -->
+        <div class="card">
+          <!-- Card header -->
+          <div class="card-header">
+            <h3 class="mb-0">Profile Update</h3>
+            <p class="mb-0">
+              You have full control to manage your own account setting.
+              <form class="mt-4" method="post">
+                {% csrf_token %}
+                {{user_form.as_p}}
+                {{profile_form.as_p}}
+                <button type="submit" class="btn btn-success">
+                  Submit
+                </button>
+              </form>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
