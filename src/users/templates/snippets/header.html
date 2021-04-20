@@ -20,9 +20,9 @@
             <div
               class="mr-2 position-relative d-flex justify-content-end align-items-end mt-n5"
             >
-              {% if user.author.picture %}
+              {% if user.profile.picture %}
               <img
-                src="{{user.author.picture.url}}"
+                src="{{user.profile.picture.url}}"
                 class="avatar-xl rounded-circle border-width-4 border-white"
                 alt=""
               />
@@ -36,6 +36,7 @@
             {% endif %}
             <div class="lh-1">
               <h2 class="mb-0">
+                {{user.author}}
                 {{user.get_full_name}}
               </h2>
               <p class="mb-0 d-block">{{user}}</p>

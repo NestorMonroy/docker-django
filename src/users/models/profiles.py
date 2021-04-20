@@ -4,6 +4,7 @@ from django.db import models
 
 # Utilities
 from src.utils.models import GralModel
+from src.utils.extra import upload_users_image_path
 
 
 class Profile(GralModel):
@@ -12,13 +13,10 @@ class Profile(GralModel):
     and statistics.
     """
 
-    user = models.OneToOneField('users.User', on_delete=models.CASCADE)
+    user = models.OneToOneField("users.User", on_delete=models.CASCADE)
 
     picture = models.ImageField(
-        'profile picture',
-        upload_to='users/pictures/',
-        blank=True,
-        null=True
+        "profile picture", upload_to=upload_users_image_path, blank=True, null=True
     )
     biography = models.TextField(max_length=500, blank=True)
 

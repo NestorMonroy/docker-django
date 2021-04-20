@@ -16,7 +16,7 @@
             <h3 class="mb-0">Profile Update</h3>
             <p class="mb-0">
               You have full control to manage your own account setting.
-              <form class="mt-4" method="post">
+              <form class="mt-4" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{user_form.as_p}}
                 {{profile_form.as_p}}

@@ -5,6 +5,8 @@ from django.core.validators import RegexValidator
 from django.contrib import messages
 from django.utils.safestring import mark_safe
 
+from src.utils.forms import BaseForm
+
 # Models
 from src.users.models import Profile, EmailActivation
 
@@ -13,17 +15,15 @@ from .signals import user_logged_in
 User = get_user_model()
 
 
-class UserDetailChangeForm(forms.ModelForm):
+class UserDetailChangeForm(BaseForm, forms.ModelForm):
     first_name = forms.CharField(
         label="First name",
         required=False,
-        widget=forms.TextInput(attrs={"class": "form-control"}),
     )
 
     last_name = forms.CharField(
         label="Last name",
         required=False,
-        widget=forms.TextInput(attrs={"class": "form-control"}),
     )
 
     class Meta:
@@ -31,16 +31,13 @@ class UserDetailChangeForm(forms.ModelForm):
         fields = ["first_name", "last_name"]
 
 
-class ProfileDetailChangeForm(forms.ModelForm):
-    biography = forms.CharField(
-        label="biography",
-        required=False,
-        widget=forms.TextInput(attrs={"class": "form-control"}),
-    )
+class ProfileDetailChangeForm(BaseForm, forms.ModelForm):
+    biography = forms.Textarea()
+    picture = forms.ImageField(required=False)
 
     class Meta:
         model = Profile
-        fields = ("biography",)
+        fields = ("biography", "picture")
 
 
 class ReactivateEmailForm(forms.Form):

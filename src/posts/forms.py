@@ -1,21 +1,16 @@
 from django import forms
 from django.core.files.uploadedfile import InMemoryUploadedFile
-
+from src.utils.forms import BaseForm
 from src.posts.models import Post, Tag
 from .humanize import naturalsize
 
 
-class TagForm(forms.ModelForm):
+class TagForm(BaseForm, forms.ModelForm):
     class Meta:
         model = Tag
         fields = [
             "title",
         ]
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.widget.attrs["class"] = "form-control"
 
 
 class CommentForm(forms.Form):
@@ -36,7 +31,7 @@ class PostCreateForm(forms.ModelForm):
     )
     upload_field_name = "image"
     status = forms.ChoiceField(required=True, choices=STATUS)
-    #tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all())
+    # tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.all())
     # Hint: this will need to be changed for use in the ads application :)
     class Meta:
         model = Post

@@ -15,8 +15,6 @@ from .managers import PostManager
 
 STATUS = ((0, "Draft"), (1, "Publish"))
 
-from src.utils.extra import upload_post_image_path
-
 
 class Tag(GralModel):
     title = models.CharField(max_length=120)

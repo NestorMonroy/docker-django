@@ -11,11 +11,11 @@ def get_filename_ext(filepath):
     return name, ext
 
 
-def upload_post_image_path(instace, filename):
+def upload_users_image_path(instace, filename):
     new_filename = random.randint(1, 99999999999)
     name, ext = get_filename_ext(filename)
     final_filename = f"{new_filename}{ext}"
-    return f"post/{new_filename}/{final_filename}"
+    return f"users/{new_filename}/{final_filename}"
 
 
 def random_string_generator(size=10, chars=string.ascii_lowercase + string.digits):
