@@ -110,6 +110,7 @@
     <hr class="mt-8 mb-5" />
   </div>
   <div class="container">
+    {% if user.is_authenticated %}
     <div class="card ">
       <div class="card-body">
         <!-- Form -->
@@ -137,12 +138,13 @@
               class="btn btn-outline-primary"
               onclick="window.location.href='{% url 'posts:all' %}';return false;"
             >
-              All Ads
+              All Post
             </button>
           </div>
         </form>
       </div>
     </div>
+    {% endif %}
     <div class="row">
      <div class="mb-3">
         <div class="d-lg-flex align-items-center justify-content-between mb-5">

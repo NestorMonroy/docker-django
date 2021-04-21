@@ -1,3 +1,7 @@
+{% url 'profile:home' as profile_home %} 
+{% url 'profile:user-update' as profile_update %} 
+{% url 'password_change' as profile_password%}
+
 <div class="col-lg-3 col-md-4 col-12">
   <!-- Side navbar -->
   <nav
@@ -28,8 +32,10 @@
         <!-- List -->
         <ul class="list-unstyled ml-n2 mb-4">
           <!-- Nav item -->
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'profile:home' %}"
+          <li
+            class="nav-item {% if request.path == profile_home %}active{% endif %}"
+          >
+            <a class="nav-link" href="{{profile_home}}"
               ><i class="fe fe-calendar nav-icon"></i>My Post</a
             >
           </li>
@@ -38,43 +44,20 @@
         <!-- List -->
         <ul class="list-unstyled ml-n2 mb-0">
           <!-- Nav item -->
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'profile:user-update' %}"
+          <li class="nav-item {% if request.path == profile_update %}active{% endif %}">
+            <a class="nav-link" href="{{profile_update}}"
               ><i class="fe fe-settings nav-icon"></i>Edit Profile</a
             >
           </li>
           <!-- Nav item -->
-          <li class="nav-item">
-            <a class="nav-link" href='{% url "password_change" %}'
+          <li class="nav-item {% if request.path == profile_password %}active{% endif %} ">
+            <a class="nav-link" href='{{profile_password}}'
               ><i class="fe fe-user nav-icon"></i>Security</a
             >
           </li>
           <!-- Nav item -->
           <li class="nav-item">
-            <a class="nav-link" href=""
-              ><i class="fe fe-refresh-cw nav-icon"></i>Social Profiles</a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href=""
-              ><i class="fe fe-bell nav-icon"></i>Notifications</a
-            >
-          </li>
-          <!-- Nav item -->
-          <li class="nav-item">
-            <a class="nav-link" href=""
-              ><i class="fe fe-lock nav-icon"></i>Profile Privacy</a
-            >
-          </li>
-          <!-- Nav item -->
-          <li class="nav-item">
-            <a class="nav-link" href=""
-              ><i class="fe fe-trash nav-icon"></i>Delete Profile</a
-            >
-          </li>
-          <!-- Nav item -->
-          <li class="nav-item">
-            <a class="nav-link" href=""
+            <a class="nav-link" href="{% url 'users:logout' %}"
               ><i class="fe fe-power nav-icon"></i>Sign Out</a
             >
           </li>
