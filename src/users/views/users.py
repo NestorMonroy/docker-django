@@ -3,6 +3,8 @@ from django.urls import reverse_lazy
 from django.http import request, HttpResponse
 from django.contrib import messages
 from django.shortcuts import redirect, render
+from django.utils.safestring import mark_safe
+
 from src.users.forms import SignupForm, LoginForm, ReactivateEmailForm
 
 from src.utils.mixins import NextUrlMixin, RequestFormAttachMixin
@@ -29,14 +31,14 @@ class AccountEmailActivateView(generic.edit.FormMixin, generic.View):
             else:
                 activated_qs = qs.filter(activated=True)
                 if activated_qs.exists():
-                    reset_link = reverse_lazy("users:password_reset")
+                    reset_link = reverse_lazy("password_reset")
                     msg = """Your email has already been confirmed
                     Do you need to <a href="{link}">reset your password</a>?
                     """.format(
                         link=reset_link
                     )
                     messages.success(request, mark_safe(msg))
-                    return redirect("login")
+                    return redirect("users:login")
         context = {"form": self.get_form(), "key": key}
         return render(request, "registration/activation-error.html", context)
 

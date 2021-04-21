@@ -13,7 +13,9 @@ urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
     path("", include(("src.posts.urls", "posts"), namespace="posts")),
     path("", include(("src.users.urls", "users"), namespace="users")),
-    path("profile/", include(("src.users.profile_urls", "profile"), namespace="profile")),
-
+    path(
+        "profile/", include(("src.users.profile_urls", "profile"), namespace="profile")
+    ),
+    path("accounts/", include("src.users.passwords.urls")),
     # path("profile/", include("src.users.profile_urls"), namespace="profile")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
