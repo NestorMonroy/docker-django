@@ -1,0 +1,12 @@
+#Django
+
+DJANGO_SECRET_KEY=xxxxxxxxxxxxxxxxxxxx
+DJANGO_ADMIN_URL=xxxxxxxx
+DJANGO_SETTINGS_MODULE=config.settings.production
+
+#aws
+DJANGO_AWS_STORAGE_BUCKET_NAME=xxxxxx
+
+#MAILGUN
+MAILGUN_API_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+MAILGUN_DOMAIN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxx

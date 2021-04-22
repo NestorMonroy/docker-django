@@ -83,10 +83,10 @@ MIDDLEWARE = [
 ]
 
 # Static files
-STATIC_ROOT = str(APPS_DIR("staticblog"))
+STATIC_ROOT = str(APPS_DIR("staticfiles"))
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [
-    str(APPS_DIR.path("static")),
+    str(APPS_DIR("static")),
 ]
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
