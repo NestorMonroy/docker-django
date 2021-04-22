@@ -16,7 +16,7 @@ STATICFILES_STORAGE = 'config.aws.utils.StaticRootS3BotoStorage'
 
 AWS_STORAGE_BUCKET_NAME = env('DJANGO_AWS_STORAGE_BUCKET_NAME') #name 
 
-S3DIRECT_REGION = 'us-east-2' # region aws 
+AWS_S3_REGION_NAME = 'us-east-2' # region aws 
 
 S3_URL = '//%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
 MEDIA_URL = '//%s.s3.amazonaws.com/media/' % AWS_STORAGE_BUCKET_NAME
