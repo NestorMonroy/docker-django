@@ -18,10 +18,16 @@ AWS_STORAGE_BUCKET_NAME = env('DJANGO_AWS_STORAGE_BUCKET_NAME') #name
 
 AWS_S3_REGION_NAME = 'us-east-2' # region aws 
 
-S3_URL = '//%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME % AWS_S3_REGION_NAME
-MEDIA_URL = '//%s.s3.amazonaws.com/media/' % AWS_STORAGE_BUCKET_NAME % AWS_S3_REGION_NAME
-MEDIA_ROOT = MEDIA_URL
-STATIC_URL = S3_URL + 'static/'
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com"
+ 
+# S3_URL = '//%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
+# MEDIA_URL = '//%s.s3.amazonaws.com/media/' % AWS_STORAGE_BUCKET_NAME
+MEDIAFILES_LOCATION = 'media'
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+MEDIA_ROOT = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+
+#MEDIA_ROOT = MEDIA_URL
+STATIC_URL = AWS_S3_CUSTOM_DOMAIN + 'static/'
 ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
 
 two_months = datetime.timedelta(days=61)
