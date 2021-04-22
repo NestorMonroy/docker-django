@@ -126,7 +126,7 @@ class EmailActivation(GralModel):
                 txt_ = get_template("registration/emails/verify.txt").render(context)
                 html_ = get_template("registration/emails/verify.html").render(context)
                 subject = "1-Click Email Verification"
-                from_email = settings.ADMINS
+                from_email = settings.DEFAULT_FROM_EMAIL
                 recipient_list = [self.email]
                 e_mail = send_mail(
                     subject,
