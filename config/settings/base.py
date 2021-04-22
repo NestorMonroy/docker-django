@@ -83,7 +83,7 @@ MIDDLEWARE = [
 ]
 
 # Static files
-STATIC_ROOT = str(APPS_DIR("staticfiles"))
+STATIC_ROOT = str(APPS_DIR("staticblog"))
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     str(APPS_DIR.path("static")),
