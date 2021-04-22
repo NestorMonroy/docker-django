@@ -41,7 +41,7 @@
         </div>
         {% endif %}
         <div class="col lh-1">
-          <h5 class="mb-1">{{obj.author}}</h5>
+          <h5 class="mb-1">{{obj.author.get_full_name}}</h5>
           <p class="font-size-xs mb-0">
             {{ obj.updated_at|naturaltime }}
           </p>

@@ -49,7 +49,7 @@ urlpatterns = [
         name="tag_list",
     ),
     path(
-        "tag_list_create/",
+        "tag-list-create/",
         tags_views.TagListView.as_view(),
         name="tag_list_create",
     ),
