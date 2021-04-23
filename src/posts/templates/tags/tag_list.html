@@ -1,0 +1,30 @@
+{% extends "base_menu.html" %}
+{% block content %}
+<!-- Content-->
+<div class="pb-16 mt-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-7 col-12">
+        {% if instance %}
+        <div class="row">
+          {% for post in instance %}
+            {% include 'snippets/card.html' with obj=post %} 
+          {% endfor %}
+        </div>
+        {% include 'snippets/pagination.html' %}
+        {% else %}
+          <p>There are no post in the database.</p>
+        {% endif %}
+      </div>
+      
+
+      <div class="col-lg-4 col-md-5 col-12 mt-6 mt-md-0">
+        {% include 'snippets/search-form.html' %} 
+        {% include 'snippets/recent_posts.html' %} 
+        {% include 'snippets/archive.html' %} 
+        {% include 'snippets/tags.html' %}
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+</div>
