@@ -117,7 +117,7 @@ class EmailActivation(GralModel):
     def send_activation(self):
         if not self.activated and not self.forced_expired:
             if self.key:
-                base_url = getattr(settings, BASE_URL, "http://0.0.0.0:8000")
+                base_url = settings.BASE_URL
                 key_path = reverse(
                     "users:email-activate", kwargs={"key": self.key}
                 )  # use reverse
